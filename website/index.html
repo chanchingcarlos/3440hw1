@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEEM3440 作業一 HW1-2 詳解 | Assignment 1 Solutions</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,"Noto Sans TC","Microsoft JhengHei",Helvetica,Arial,sans-serif;margin:0;background:#f1f5f9;color:#0f172a;line-height:1.65}
+header{position:sticky;top:0;z-index:50;background:linear-gradient(120deg,#1a3a5f,#0e7490);color:#fff;padding:18px 20px 12px}
+header h1{margin:0;font-size:20px}
+header p{margin:4px 0 8px;font-size:13px;opacity:.9}
+#topnav{display:flex;gap:8px;flex-wrap:wrap}
+#topnav a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:5px 13px;font-size:13px}
+#topnav a:hover{background:#fff;color:#0f172a}
+.topbtns{position:absolute;top:14px;right:16px;display:flex;gap:8px}
+.tbtn{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:13px}
+.tbtn:hover{background:#fff;color:#0f172a}
+@media(max-width:640px){.topbtns{position:static;margin-top:10px}}
+main{max-width:1020px;margin:0 auto;padding:18px 14px 60px}
+.card{background:#fff;border-radius:12px;padding:20px;margin:18px 0;box-shadow:0 2px 10px rgba(2,32,71,.08)}
+.card h2{margin-top:0;color:#1a3a5f;font-size:18px}
+.ans{background:#eef6ee;border-left:5px solid #15803d;padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.step{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin:8px 0}
+code.k{background:#f1f5f9;padding:1px 7px;border-radius:6px;font-size:13px}
+.small{font-size:13px;color:#475569}
+.kbd{font-size:12px;background:#0f172a;color:#fff;border-radius:6px;padding:2px 9px}
+table.m{border-collapse:collapse;width:100%;margin:10px 0;font-size:13px}
+table.m th{background:#1a3a5f;color:#fff;padding:7px 6px}
+table.m td{border:1px solid #cbd5e1;padding:6px;text-align:center}
+table.m tr:nth-child(even) td{background:#f8fafc}
+.btn{background:#1a3a5f;color:#fff;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;margin:3px}
+.btn:hover{background:#0e7490}
+.btn.ghost{background:#fff;color:#1a3a5f;border:1px solid #1a3a5f}
+.btn.on{background:#0e7490}
+.btn.bit{width:52px;font-weight:700}
+select,input[type=range]{margin:4px 8px 4px 0}
+input[type=range]{width:180px}
+canvas.plot{background:#fff;border:1px solid #cbd5e1;border-radius:8px;width:100%;max-width:560px}
+svg.diagram{background:#fff;border:1px solid #cbd5e1;border-radius:8px;max-width:100%}
+svg.diagram text{font-size:11px;fill:#0f172a}
+pre.print{background:#0f172a;color:#d1fae5;border-radius:8px;padding:12px;font-size:12.5px;overflow-x:auto;white-space:pre-wrap}
+.cite{font-size:12.5px;color:#64748b}
+.bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px}
+.bar .track{flex:1;background:#e2e8f0;border-radius:6px;height:14px;position:relative}
+.bar .fill{background:#0e7490;border-radius:6px;height:14px}
+.bar .lbl{width:150px;text-align:right}
+.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,.6);z-index:100;overflow-y:auto}
+.modal.open{display:block}
+.modal-box{background:#fff;max-width:860px;margin:4vh auto;border-radius:12px;overflow:hidden}
+.modal-bar{display:flex;justify-content:space-between;align-items:center;background:#1a3a5f;color:#fff;padding:12px 16px}
+.modal-body{padding:18px}
+.tutorial h3{color:#1a3a5f}
+.tutorial table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+.tutorial th{background:#1a3a5f;color:#fff;padding:6px}
+.tutorial td{border:1px solid #cbd5e1;padding:6px}
+details.quiz{border:1px dashed #0e7490;border-radius:8px;padding:10px 14px;margin:10px 0}
+.pdf-frame{width:100%;height:520px;border:1px solid #cbd5e1;border-radius:8px}
+footer{text-align:center;font-size:12.5px;color:#64748b;padding:20px}
+/* dark mode */
+body.dark{background:#0b1220;color:#e2e8f0}
+body.dark .card{background:#111c30;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+body.dark .card h2{color:#7dd3fc}
+body.dark table.m th{background:#164e63}
+body.dark table.m td{border-color:#334155}
+body.dark table.m tr:nth-child(even) td{background:#0f2033}
+body.dark .step{background:#0f2033;border-color:#334155}
+body.dark .ans{background:#052e1b;border-color:#22c55e;color:#e2e8f0}
+body.dark code.k{background:#1e293b;color:#e2e8f0}
+body.dark .small,body.dark .cite,body.dark footer{color:#94a3b8}
+body.dark .kbd{background:#e2e8f0;color:#0f172a}
+body.dark canvas.plot{background:#0f2033;border-color:#334155}
+body.dark svg.diagram{background:#0f2033;border-color:#334155}
+body.dark svg.diagram text{fill:#e2e8f0}
+body.dark svg.diagram ellipse{fill:#0f2033;stroke:#7dd3fc}
+body.dark svg.diagram path{stroke:#7dd3fc}
+body.dark .tutorial h3{color:#7dd3fc}
+body.dark .tutorial td{border-color:#334155}
+body.dark select,body.dark input{background:#0f2033;color:#e2e8f0;border:1px solid #334155}
+body.dark .modal-box{background:#111c30}
+body.dark .modal-bar{background:#164e63}
+body.dark details.quiz{border-color:#22d3ee}
+body.dark .bar .track{background:#334155}
+body.dark .bar .lbl{color:#e2e8f0}
+body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('hw-theme')==='dark')document.body.classList.add('dark');}catch(e){}</script>
+<header>
+<h1>SEEM3440 作業一 詳解 HW1-2 Solutions</h1>
+<p>整數規劃 Integer Programming：窮舉法 exhaustive enumeration ＋ 分枝定界法 branch-and-bound</p>
+<nav id="topnav">
+<a href="#pdf">答案 PDF</a><a href="#q1a">Q1(a) 窮舉</a><a href="#q1b">Q1(b) PIP 分枝定界</a><a href="#q2a">Q2(a) 窮舉</a><a href="#q2b">Q2(b) BIP 分枝定界</a>
+</nav>
+<div class="topbtns">
+<button id="langBtn" class="tbtn" onclick="location.href='en.html'">EN</button>
+<button id="darkBtn" class="tbtn" onclick="toggleDark()">🌙 深色</button>
+</div>
+</header>
+<main>
+<section class="card" id="pdf">
+<h2>答案 PDF Answers PDF</h2>
+<p class="small">英文答案（只有答案，沒有推導過程）English answers only, no derivations.</p>
+<iframe class="pdf-frame" src="../answers/HW1_Answers.pdf" title="HW1 Answers PDF"></iframe>
+<p><button class="btn" onclick="window.open('../answers/HW1_Answers.pdf','_blank')">⬇ 下載／新分頁開啟 PDF</button></p>
+</section>
+
+<section class="card" id="q1a">
+<h2>Q1(a) 窮舉法 exhaustive enumeration（25 分）</h2>
+<div class="step"><b>題目 recap：</b>max <code class="k">z = 6.5x1 + 5x2</code>，s.t. <code class="k">2x1+2x2 ≤ 7</code> (1)，<code class="k">2x1+x2 ≤ 5</code> (2)，<code class="k">x1+x2 ≥ 1</code> (3)，<code class="k">x1,x2 ≥ 0 整數 integer</code>。</div>
+<div class="ans"><b>答案 Answer：</b>候選整數點共 16 個（x1,x2 ∈ {0,1,2,3}），可行 8 個；<b>最優解 optimal (x1*,x2*) = (2,1)，z* = 18</b>。</div>
+<h3>互動小工具：可行性檢查器 feasibility checker</h3>
+<p class="small">拖動滑桿選擇整數點，檢查每條限制是否成立 check each constraint：</p>
+<p>x1 = <b id="q1aX1v">2</b> <input type="range" id="q1aX1" min="0" max="3" step="1" value="2" oninput="q1aCheck()"> &nbsp; x2 = <b id="q1aX2v">1</b> <input type="range" id="q1aX2" min="0" max="3" step="1" value="1" oninput="q1aCheck()"></p>
+<div id="q1aOut" class="step">—</div>
+<h3>16 點窮舉表 enumeration table</h3>
+<table class="m" id="q1aTable"><tr><th>x1</th><th>x2</th><th>可行？Feasible?</th><th>z</th></tr></table>
+<p><button class="btn" onclick="openTut('q1a')">📖 詳細教學 tutorial</button></p>
+</section>
+
+<section class="card" id="q1b">
+<h2>Q1(b) PIP 分枝定界法 branch-and-bound（25 分）</h2>
+<div class="step"><b>題目 recap：</b>用 PIP Branch-and-Bound 解 Q1，並畫出分枝定界樹 B&amp;B tree；每個子問題的 LP 鬆弛以作圖法求解 LP relaxation solved graphically。</div>
+<div class="ans"><b>答案 Answer：</b>LP0 (1.5,2) z=19.75 → 分枝 x1；LP1 (1,2.5) z=19 → 分枝 x2；LP2 (2,1) z=18 整數，z*=18；LP3 (1,2) z=16.5 淘汰；LP4 (0.5,3) z=18.25 → 分枝 x1；LP5 (0,3.5) z=17.5 ≤ 18 淘汰；LP6 不可行淘汰。<b>最優 (2,1)，z* = 18</b>。</div>
+<h3>互動小工具：分枝定界樹＋LP 可行域 B&amp;B tree + LP feasible region</h3>
+<svg class="diagram" id="tree1" viewBox="0 0 560 300" width="560" height="300">
+<path d="M280 20 L140 80 M280 20 L420 80 M140 80 L70 150 M140 80 L210 150 M210 150 L150 230 M210 150 L270 230" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
+<g id="tree1nodes">
+<ellipse cx="280" cy="20" rx="62" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="280" y="24" text-anchor="middle">LP0 19.75</text>
+<ellipse cx="140" cy="80" rx="58" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="140" y="84" text-anchor="middle">LP1 19</text>
+<ellipse cx="420" cy="80" rx="58" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="420" y="84" text-anchor="middle">LP2 18★</text>
+<ellipse cx="70" cy="150" rx="56" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="70" y="154" text-anchor="middle">LP3 16.5</text>
+<ellipse cx="210" cy="150" rx="58" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="210" y="154" text-anchor="middle">LP4 18.25</text>
+<ellipse cx="150" cy="230" rx="56" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="150" y="234" text-anchor="middle">LP5 17.5</text>
+<ellipse cx="270" cy="230" rx="56" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="270" y="234" text-anchor="middle">LP6 ✕</text>
+</g>
+<text x="200" y="55">x1≤1</text><text x="345" y="55">x1≥2</text>
+<text x="95" y="120">x2≤2</text><text x="180" y="120">x2≥3</text>
+<text x="150" y="195">x1≤0</text><text x="245" y="195">x1≥1</text>
+</svg>
+<p class="small">點選節點查看 LP 鬆弛結果 click a node for LP relaxation result：</p>
+<p id="q1bBtns"></p>
+<div id="q1bOut" class="step">—</div>
+<canvas class="plot" id="lpCanvas" width="560" height="420"></canvas>
+<p class="cite">作圖法示意：陰影為 LP 可行域 feasible region；綠點可行整數點，紅點不可行；大圓圈為所選節點 LP 最優解。Graphical-method sketch.</p>
+<p><button class="btn" onclick="openTut('q1b')">📖 詳細教學 tutorial</button></p>
+</section>
+
+<section class="card" id="q2a">
+<h2>Q2(a) BIP 窮舉法 exhaustive enumeration（25 分）</h2>
+<div class="step"><b>題目 recap：</b>max <code class="k">z = 3x1+3x2+5x3−2x4−x5</code>，s.t. <code class="k">x1+2x2−3x4−x5 ≤ 0</code> (1)，<code class="k">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2)，<code class="k">xj ∈ {0,1}</code>。</div>
+<div class="ans"><b>答案 Answer：</b>32 個二元點中 9 個可行；<b>最優解 optimal (1,1,1,1,1)，z* = 8（唯一 unique）</b>。</div>
+<h3>互動小工具：二元點檢查器 binary-point checker</h3>
+<p>
+<button class="btn bit" id="bit0" onclick="flipBit(0)">0</button>
+<button class="btn bit" id="bit1" onclick="flipBit(1)">0</button>
+<button class="btn bit" id="bit2" onclick="flipBit(2)">0</button>
+<button class="btn bit" id="bit3" onclick="flipBit(3)">0</button>
+<button class="btn bit" id="bit4" onclick="flipBit(4)">0</button>
+<span class="small">x1 x2 x3 x4 x5</span></p>
+<div id="q2aOut" class="step">—</div>
+<h3>32 點窮舉表 enumeration table <button class="btn ghost" id="q2aFilter" onclick="toggleQ2aFilter()">只看可行點 feasible only</button></h3>
+<table class="m" id="q2aTable"><tr><th>(x1..x5)</th><th>(1) LHS ≤ 0?</th><th>(2) LHS ≥ 50?</th><th>z</th><th>可行？</th></tr></table>
+<p><button class="btn" onclick="openTut('q2a')">📖 詳細教學 tutorial</button></p>
+</section>
+
+<section class="card" id="q2b">
+<h2>Q2(b) BIP 分枝定界法 branch-and-bound（25 分）</h2>
+<div class="step"><b>題目 recap：</b>用 BIP Branch-and-Bound 解 Q2，每個子問題的 LP 鬆弛用 LP 求解器解（附電腦輸出 show computer printouts）。</div>
+<div class="ans"><b>答案 Answer：</b>LP0 (1,1,1,0.7222,0.8333) z=8.7222 → 分枝 x4；x4=0 支 LP1 z=1.9286（後被 z*=8 淘汰）；x4=1 支 LP2 z=8.4444 → 分枝 x5；LP3 (x5=0) z=5.4286 淘汰；LP4 (x5=1) = (1,1,1,1,1) 整數 z=8。<b>最優 (1,1,1,1,1)，z* = 8</b>。</div>
+<h3>互動小工具：節點電腦輸出 LP-solver printouts</h3>
+<svg class="diagram" id="tree2" viewBox="0 0 560 220" width="560" height="220">
+<path d="M280 20 L140 90 M280 20 L420 90 M420 90 L340 170 M420 90 L500 170" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
+<ellipse cx="280" cy="20" rx="70" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="280" y="24" text-anchor="middle">BIP0 8.7222</text>
+<ellipse cx="140" cy="90" rx="66" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="140" y="94" text-anchor="middle">BIP1 1.9286</text>
+<ellipse cx="420" cy="90" rx="66" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="420" y="94" text-anchor="middle">BIP2 8.4444</text>
+<ellipse cx="340" cy="170" rx="66" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="340" y="174" text-anchor="middle">BIP3 5.4286</text>
+<ellipse cx="500" cy="170" rx="62" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="500" y="174" text-anchor="middle">BIP4 8★</text>
+<text x="195" y="60">x4=0</text><text x="345" y="60">x4=1</text>
+<text x="365" y="135">x5=0</text><text x="470" y="135">x5=1</text>
+</svg>
+<p id="q2bBtns"></p>
+<pre class="print" id="q2bOut">—</pre>
+<p><button class="btn" onclick="openTut('q2b')">📖 詳細教學 tutorial</button></p>
+</section>
+</main>
+<footer>SEEM3440 Operations Research II · Assignment 1 ·窮舉＋分枝定界 | Enumeration + Branch-and-Bound</footer>
+
+<div class="modal" id="tutModal" onclick="if(event.target===this)closeTut()">
+<div class="modal-box"><div class="modal-bar">
+<b id="tutTitle">詳細教學</b>
+<button class="btn" onclick="closeTut()">✕ 關閉／返回</button>
+</div><div class="modal-body" id="tutBody"></div></div>
+</div>
+
+<template id="tut-q1a">
+<div class="tutorial">
+<h3>Q1(a) 從零開始：PIP 窮舉法（適合初學者）</h3>
+<p><b>對象 reader：</b>第一次接觸整數規劃 integer programming (IP) 的同學。本題是純整數規劃 pure IP (PIP)：全部變數 variable 皆為整數。</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>窮舉法</td><td>exhaustive enumeration</td></tr>
+<tr><td>可行解／可行域</td><td>feasible solution / feasible region</td></tr>
+<tr><td>最優解／最優值</td><td>optimal solution / optimal value</td></tr>
+<tr><td>純整數規劃</td><td>pure integer programming (PIP)</td></tr></table>
+<p class="cite">講義 Lecture notes：IP 定義見 LN Ch.1, p.1:14–1:15；為何不能只靠四捨五入 rounding 見 LN Ch.2, p.2:12–2:19；窮舉法與 Example 2.8 見 LN Ch.2, p.2:20–2:22。</p>
+<ol>
+<li><b>定出候選盒子 candidate box：</b>由 2x1 ≤ 7 得 x1 ≤ 3；由 2x2 ≤ 7 得 x2 ≤ 3。故只需檢查 x1,x2 ∈ {0,1,2,3} 共 16 點。</li>
+<li><b>逐點檢查三條限制 check constraints：</b>例如 (2,1)：2·2+2·1=6 ≤ 7 ✓；2·2+1=5 ≤ 5 ✓；2+1=3 ≥ 1 ✓，故可行，z = 6.5·2+5·1 = 18。</li>
+<li><b>反例：</b>(3,0)：2·3+0 = 6 &gt; 5 違反 (2)，不可行 infeasible，即使 z = 19.5 更高也不能要。</li>
+<li><b>比較 8 個可行點的 z：</b>最大為 (2,1) 的 18，即最優解 optimal solution。</li>
+</ol>
+<p><b>常見錯誤 common mistakes：</b>只檢查 (1)(2) 而忘記 x1+x2 ≥ 1（會誤收 (0,0)）；把 (1,3) 當可行（2+6=8 &gt; 7）；看到 (3,0) 的 z=19.5 就以為最優。</p>
+<details class="quiz"><summary><b>自我測驗 self-test（點開作答 click to test yourself）</b></summary>
+<p>1. 為何不用檢查 x1 = 4？2. (0,0) 為何不可行？3. 若目標改為 min，答案是誰？</p>
+<p><b>答案 answers：</b>1. 2·4 = 8 &gt; 7，已違反 (1)。2. 違反 (3) x1+x2 ≥ 1。3. 可行點 z 最小是 (0,1) 的 5。</p></details>
+</div>
+</template>
+
+<template id="tut-q1b">
+<div class="tutorial">
+<h3>Q1(b) 從零開始：PIP 分枝定界法（適合初學者）</h3>
+<p><b>對象 reader：</b>學過 LP 鬆弛 LP relaxation，想學會分枝 branching、定界 bounding、淘汰 fathoming 三步的同學。</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>分枝定界法</td><td>branch-and-bound (B&amp;B)</td></tr>
+<tr><td>LP 鬆弛／上界</td><td>LP relaxation / upper bound</td></tr>
+<tr><td>分枝／淘汰／保留解</td><td>branching / fathoming / incumbent</td></tr>
+<tr><td>作圖法</td><td>graphical method</td></tr></table>
+<p class="cite">講義 Lecture notes：B&amp;B 三步見 LN Ch.2, p.2:25–2:30；演算法流程見 LN Ch.2, p.2:31–2:35；2-D PIP 完整範例見 LN Ch.2, p.2:36–2:45。</p>
+<ol>
+<li><b>初始化 initialization：</b>保留解 incumbent z* = −∞。解 LP0 得 (1.5,2)，z = 19.75（上界 bound）；x1 非整數，三個淘汰檢驗皆不通過。</li>
+<li><b>第一次分枝 branch x1：</b>由於 1 &lt; 1.5 &lt; 2，故加 x1 ≤ 1（LP1）與 x1 ≥ 2（LP2）。LP2 得整數點 (2,1) z = 18 → 淘汰（檢驗 3），z* = 18。</li>
+<li><b>第二次分枝 branch x2：</b>LP1 = (1,2.5)，x2 非整數 → LP3 (x2 ≤ 2) 得 (1,2) z = 16.5（整數但 ≤ z*，淘汰）；LP4 (x2 ≥ 3) 得 (0.5,3) z = 18.25 &gt; 18，繼續。</li>
+<li><b>第三次分枝 branch x1：</b>LP5 (x1 ≤ 0) 得 (0,3.5) z = 17.5 ≤ 18，檢驗 1 淘汰；LP6 (x1 = 1, x2 ≥ 3) 無可行解，檢驗 2 淘汰。</li>
+<li><b>無剩餘子問題 → incumbent (2,1), z* = 18 即最優 optimal。</b></li>
+</ol>
+<p><b>常見錯誤 common mistakes：</b>分枝變數選錯（應選第一個非整數變數 first fractional variable，自然順序 natural order）；整數解出現就停（還要確認上界 ≤ z* 的節點）；忘記更新保留解。</p>
+<details class="quiz"><summary><b>自我測驗 self-test（點開作答 click to test yourself）</b></summary>
+<p>1. LP4 的上界 18.25 為何不能直接當答案？2. LP5 為何被淘汰？3. LP6 屬於哪個淘汰檢驗？</p>
+<p><b>答案 answers：</b>1. (0.5,3) 非整數，只是上界。2. 檢驗 1：17.5 ≤ z* = 18。3. 檢驗 2：LP 鬆弛無可行解。</p></details>
+</div>
+</template>
+
+<template id="tut-q2a">
+<div class="tutorial">
+<h3>Q2(a) 從零開始：BIP 窮舉法（適合初學者）</h3>
+<p><b>對象 reader：</b>第一次做二元整數規劃 binary integer programming (BIP)／0-1 規劃的同學。</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>二元變數</td><td>binary variable</td></tr>
+<tr><td>窮舉法</td><td>exhaustive enumeration</td></tr>
+<tr><td>限制式左端值</td><td>constraint left-hand side (LHS)</td></tr></table>
+<p class="cite">講義 Lecture notes：BIP 定義見 LN Ch.2, p.2:3；指派問題範例見 LN Ch.2, p.2:4–2:6；窮舉複雜度 2ⁿ 見 LN Ch.2, p.2:23–2:24。</p>
+<ol>
+<li><b>共 2⁵ = 32 點：</b>n = 5 個二元變數，每個 0/1，故 32 種組合。</li>
+<li><b>每點算三個數：</b>(1) LHS = x1+2x2−3x4−x5（要 ≤ 0）；(2) LHS = −15x1+30x2−35x3+45x4+45x5（要 ≥ 50）；z = 3x1+3x2+5x3−2x4−x5。</li>
+<li><b>例 (1,1,1,1,1)：</b>(1) LHS = 1+2−3−1 = −1 ≤ 0 ✓；(2) LHS = −15+30−35+45+45 = 70 ≥ 50 ✓；z = 8。</li>
+<li><b>反例 (1,1,1,0,0)：</b>z = 11 最高但 (2) LHS = −20 &lt; 50，不可行。注意：z 高≠可行。</li>
+<li><b>9 個可行點中 z 最大為 8 → 最優唯一 optimal unique。</b></li>
+</ol>
+<p><b>常見錯誤 common mistakes：</b>把 (2) 的 ≥ 看成 ≤；漏算負係數（−2x4、−x5）；以為 z = 11 的點最優而忽略可行性。</p>
+<details class="quiz"><summary><b>自我測驗 self-test（點開作答 click to test yourself）</b></summary>
+<p>1. (0,0,0,1,1) 可行嗎？z 多少？2. 可行點有幾個？3. 為何 (0,1,0,0,1) 不可行？</p>
+<p><b>答案 answers：</b>1. 可行，z = −3。2. 9 個。3. (1) LHS = 0+2−0−1 = 1 &gt; 0，違反 (1)。</p></details>
+</div>
+</template>
+
+<template id="tut-q2b">
+<div class="tutorial">
+<h3>Q2(b) 從零開始：BIP 分枝定界法（適合初學者）</h3>
+<p><b>對象 reader：</b>會 BIP 窮舉，想學「固定二元變數 fixing binary variables」分枝＋LP 求解器輸出判讀的同學。</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>固定變數</td><td>variable fixing (x = 0 / 1)</td></tr>
+<tr><td>電腦輸出</td><td>computer printout (LP solver output)</td></tr>
+<tr><td>最佳界／最新子問題</td><td>best bound / most recent subproblem</td></tr></table>
+<p class="cite">講義 Lecture notes：B&amp;B 演算法見 LN Ch.2, p.2:31–2:35；BIP 完整範例（固定變數、輸出判讀）見 LN Ch.2, p.2:74–2:93。</p>
+<ol>
+<li><b>改寫＋鬆弛：</b>xj ∈ {0,1} 等價於 0 ≤ xj ≤ 1 加整數限制；刪去整數限制得 LP0。求解器輸出 (1,1,1,0.7222,0.8333)，z = 8.7222。</li>
+<li><b>第一次分枝 branch x4：</b>第一個非整數變數（自然順序）是 x4 = 0.7222 → 固定 x4 = 0（BIP1）與 x4 = 1（BIP2）。選子問題規則：最佳界 best bound 或最新建立其一，此處皆選 BIP2 先做亦可。</li>
+<li><b>BIP2：</b>輸出 (1,1,1,1,0.5556) z = 8.4444，x5 非整數 → 固定 x5 = 0（BIP3）與 x5 = 1（BIP4）。</li>
+<li><b>BIP4：</b>輸出整數點 (1,1,1,1,1) z = 8 → 檢驗 3 淘汰，z* = 8 成為保留解。</li>
+<li><b>回頭檢驗：</b>BIP1 界 1.9286 ≤ 8（檢驗 1 淘汰）；BIP3 界 5.4286 ≤ 8（檢驗 1 淘汰）。無剩餘 → (1,1,1,1,1) 最優。</li>
+</ol>
+<p><b>常見錯誤 common mistakes：</b>對二元變數還用 xj ≤ floor／≥ floor+1（應直接固定 0/1）；找到整數解就停而忘記用檢驗 1 清掉其餘節點；把 LP 界當整數答案。</p>
+<details class="quiz"><summary><b>自我測驗 self-test（點開作答 click to test yourself）</b></summary>
+<p>1. LP0 為何分枝 x4 而非 x1？2. BIP3 為何不用再分枝？3. 若 BIP1 的界是 8.5，該怎麼辦？</p>
+<p><b>答案 answers：</b>1. x1 = 1 已是整數，x4 是第一個非整數變數。2. 界 5.4286 ≤ z* = 8，檢驗 1 淘汰。3. 8.5 &gt; 8，須繼續分枝（對 x2 或 x3）。</p></details>
+</div>
+</template>
+
+<script>
+var Q1A=[[0,0,0,"N (3)"],[0,1,5,"Y"],[0,2,10,"Y"],[0,3,15,"Y"],[1,0,6.5,"Y"],[1,1,11.5,"Y"],[1,2,16.5,"Y"],[1,3,21.5,"N (1)"],[2,0,13,"Y"],[2,1,18,"Y"],[2,2,23,"N (1)(2)"],[2,3,28,"N (1)(2)"],[3,0,19.5,"N (2)"],[3,1,24.5,"N (1)(2)"],[3,2,29.5,"N (1)(2)"],[3,3,34.5,"N (1)(2)"]];
+(function(){var t=document.getElementById('q1aTable');Q1A.forEach(function(r){var tr=document.createElement('tr');r.forEach(function(c){var td=document.createElement('td');td.textContent=c;tr.appendChild(td);});t.appendChild(tr);});})();
+function q1aCheck(){var x1=+document.getElementById('q1aX1').value,x2=+document.getElementById('q1aX2').value;
+document.getElementById('q1aX1v').textContent=x1;document.getElementById('q1aX2v').textContent=x2;
+var c1=2*x1+2*x2<=7,c2=2*x1+x2<=5,c3=x1+x2>=1,z=6.5*x1+5*x2,ok=c1&&c2&&c3;
+var star=(x1===2&&x2===1)?' ★ 最優 optimal':(ok?'（可行，但 z < 18，非最優）':'');
+document.getElementById('q1aOut').innerHTML='(1) 2x1+2x2 = '+(2*x1+2*x2)+(c1?' ✓':' ✕')+'　(2) 2x1+x2 = '+(2*x1+x2)+(c2?' ✓':' ✕')+'　(3) x1+x2 = '+(x1+x2)+(c3?' ✓':' ✕')+'　z = '+z+' → '+(ok?'<b>可行 feasible</b>':'<b>不可行 infeasible</b>')+star;}
+q1aCheck();
+var Q1B=[
+{id:'LP0',add:'—',x:'(1.5, 2)',z:'19.75',info:'LP0：無外加限制，(1.5,2)，z=19.75，上界；x1 非整數 → 分枝 x1。Branch x1 (1≤x1≤2 split).'},
+{id:'LP1',add:'x1 ≤ 1',x:'(1, 2.5)',z:'19',info:'LP1：(1,2.5)，z=19；x2 非整數 → 分枝 x2。Branch x2.'},
+{id:'LP2',add:'x1 ≥ 2',x:'(2, 1)',z:'18',info:'LP2：整數點 (2,1)，z=18 → 檢驗3淘汰，保留解 incumbent z*=18。'},
+{id:'LP3',add:'x1≤1,x2≤2',x:'(1, 2)',z:'16.5',info:'LP3：整數點 (1,2)，z=16.5 ≤ 18 → 淘汰 fathomed，保留解不變。'},
+{id:'LP4',add:'x1≤1,x2≥3',x:'(0.5, 3)',z:'18.25',info:'LP4：(0.5,3)，z=18.25 > 18 → 分枝 x1。Branch x1.'},
+{id:'LP5',add:'x1≤0,x2≥3',x:'(0, 3.5)',z:'17.5',info:'LP5：(0,3.5)，z=17.5 ≤ 18 → 檢驗1淘汰 fathomed by test 1。'},
+{id:'LP6',add:'x1=1,x2≥3',x:'—',z:'—',info:'LP6：x1=1 與 x2≥3 下 2+2x2≤7 要求 x2≤2.5，矛盾 → 無可行解，檢驗2淘汰 fathomed by test 2。'}];
+var q1bSel='LP0';
+(function(){var p=document.getElementById('q1bBtns');Q1B.forEach(function(n){var b=document.createElement('button');b.className='btn ghost';b.textContent=n.id;b.onclick=function(){q1bSel=n.id;q1bShow();drawLP();};p.appendChild(b);});})();
+function q1bShow(){var n=Q1B.filter(function(a){return a.id===q1bSel;})[0];
+document.getElementById('q1bOut').innerHTML='<b>'+n.id+'</b>（外加 '+n.add+'）：LP 最優 '+n.x+'，z = '+n.z+'<br>'+n.info;}
+q1bShow();
+function drawLP(){var cv=document.getElementById('lpCanvas'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+function X(x){return 50+x*130;}function Y(y){return H-40-y*88;}
+g.clearRect(0,0,W,H);g.strokeStyle='#94a3b8';g.beginPath();g.moveTo(40,10);g.lineTo(40,H-30);g.lineTo(W-10,H-30);g.stroke();
+g.fillStyle='#0f172a';g.font='13px sans-serif';g.fillText('x1',W-30,H-10);g.fillText('x2',12,30);
+var dark=document.body.classList.contains('dark');if(dark)g.fillStyle='#e2e8f0';
+for(var i=0;i<=3;i++){g.fillText(i,X(i)-3,H-12);}for(var j=0;j<=4;j++){g.fillText(j,18,Y(j)+4);}
+g.beginPath();g.moveTo(X(0),Y(3.5));g.lineTo(X(3.5),Y(0));g.closePath();
+g.beginPath();g.moveTo(X(0),Y(5));g.lineTo(X(2.5),Y(0));g.closePath();
+g.beginPath();g.moveTo(X(0),Y(3.5));g.lineTo(X(0),Y(5));g.lineTo(X(1.5),Y(2));g.lineTo(X(2.5),Y(0));g.lineTo(X(1),Y(0));g.lineTo(X(0),Y(1));g.closePath();
+g.fillStyle=dark?'rgba(45,212,191,.18)':'rgba(14,116,144,.15)';g.fill();
+g.strokeStyle='#0e7490';g.stroke();
+[[0,1,'Y'],[0,2,'Y'],[0,3,'Y'],[1,0,'Y'],[1,1,'Y'],[1,2,'Y'],[2,0,'Y'],[2,1,'Y'],[0,0,'N'],[1,3,'N'],[2,2,'N'],[3,0,'N']].forEach(function(p){g.beginPath();g.arc(X(p[0]),Y(p[1]),5,0,7);g.fillStyle=p[2]==='Y'?'#16a34a':'#dc2626';g.fill();});
+var pts={LP0:[1.5,2],LP1:[1,2.5],LP2:[2,1],LP3:[1,2],LP4:[0.5,3],LP5:[0,3.5],LP6:null},pt=pts[q1bSel];
+if(pt){g.beginPath();g.arc(X(pt[0]),Y(pt[1]),10,0,7);g.strokeStyle='#f59e0b';g.lineWidth=3;g.stroke();g.lineWidth=1;}
+g.fillStyle=dark?'#e2e8f0':'#0f172a';g.fillText('2x1+2x2=7',X(2.2),Y(1.6));g.fillText('2x1+x2=5',X(1.9),Y(1.0));}
+drawLP();
+var BITS=[0,0,0,0,0],q2aFeasOnly=false;
+var Q2A=[];(function(){for(var a=0;a<2;a++)for(var b=0;b<2;b++)for(var c=0;c<2;c++)for(var d=0;d<2;d++)for(var e=0;e<2;e++)Q2A.push([a,b,c,d,e]);})();
+function q2row(r){var l1=r[0]+2*r[1]-3*r[3]-r[4],l2=-15*r[0]+30*r[1]-35*r[2]+45*r[3]+45*r[4],z=3*r[0]+3*r[1]+5*r[2]-2*r[3]-r[4];return{l1:l1,l2:l2,z:z,ok:l1<=0&&l2>=50};}
+function renderQ2a(){var t=document.getElementById('q2aTable');while(t.rows.length>1)t.deleteRow(1);
+Q2A.forEach(function(r){var q=q2row(r);if(q2aFeasOnly&&!q.ok)return;var tr=t.insertRow();tr.insertCell().textContent='('+r.join(',')+')';tr.insertCell().textContent=q.l1+(q.l1<=0?' ✓':' ✕');tr.insertCell().textContent=q.l2+(q.l2>=50?' ✓':' ✕');tr.insertCell().textContent=q.z;tr.insertCell().textContent=q.ok?'Y':'N';if(q.ok)tr.style.background='rgba(22,163,74,.12)';});}
+renderQ2a();
+function toggleQ2aFilter(){q2aFeasOnly=!q2aFeasOnly;document.getElementById('q2aFilter').textContent=q2aFeasOnly?'看全部 show all':'只看可行點 feasible only';renderQ2a();}
+function flipBit(i){BITS[i]=1-BITS[i];document.getElementById('bit'+i).textContent=BITS[i];var q=q2row(BITS);
+var star=(BITS.join('')==='11111')?' ★ 最優 optimal':(q.ok?'（可行，但 z < 8，非最優）':'');
+document.getElementById('q2aOut').innerHTML='(1) LHS = '+q.l1+(q.l1<=0?' ✓ ≤0':' ✕ >0')+'　(2) LHS = '+q.l2+(q.l2>=50?' ✓ ≥50':' ✕ <50')+'　z = '+q.z+' → '+(q.ok?'<b>可行 feasible</b>':'<b>不可行 infeasible</b>')+star;}
+flipBit(0);flipBit(0);
+var Q2B=[
+{id:'BIP0',fix:'—',x:'(1, 1, 1, 0.7222, 0.8333)',z:'8.7222',why:'第一個非整數變數 x4 → 固定 x4=0 / x4=1。Branch x4.'},
+{id:'BIP1',fix:'x4 = 0',x:'(0, 0.5, 0.2857, 0, 1)',z:'1.9286',why:'界 1.9286 ≤ z*=8 → 檢驗1淘汰 fathomed by test 1。'},
+{id:'BIP2',fix:'x4 = 1',x:'(1, 1, 1, 1, 0.5556)',z:'8.4444',why:'x5 非整數 → 固定 x5=0 / x5=1。Branch x5.'},
+{id:'BIP3',fix:'x4=1,x5=0',x:'(1, 1, 0.2857, 1, 0)',z:'5.4286',why:'界 5.4286 ≤ z*=8 → 檢驗1淘汰 fathomed by test 1。'},
+{id:'BIP4',fix:'x4=1,x5=1',x:'(1, 1, 1, 1, 1)',z:'8',why:'全整數 all-integer → 檢驗3淘汰，新保留解 new incumbent z*=8。'}];
+(function(){var p=document.getElementById('q2bBtns');Q2B.forEach(function(n){var b=document.createElement('button');b.className='btn ghost';b.textContent=n.id;b.onclick=function(){document.getElementById('q2bOut').textContent='>>> '+n.id+'（固定 '+n.fix+'）\nLP solver printout: x = '+n.x+'\nObjective bound: z = '+n.z+'\n'+n.why;};p.appendChild(b);});})();
+document.getElementById('q2bOut').textContent='>>> BIP0（固定 —）\nLP solver printout: x = (1, 1, 1, 0.7222, 0.8333)\nObjective bound: z = 8.7222\n第一個非整數變數 x4 → 固定 x4=0 / x4=1。Branch x4.';
+var titles={q1a:'Q1(a) 詳細教學 tutorial',q1b:'Q1(b) 詳細教學 tutorial',q2a:'Q2(a) 詳細教學 tutorial',q2b:'Q2(b) 詳細教學 tutorial'};
+function openTut(q){document.getElementById('tutBody').innerHTML=document.getElementById('tut-'+q).innerHTML;document.getElementById('tutTitle').textContent=titles[q]||'詳細教學';document.getElementById('tutModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeTut(){document.getElementById('tutModal').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeTut();});
+function toggleDark(){var on=document.body.classList.toggle('dark');try{localStorage.setItem('hw-theme',on?'dark':'light');}catch(e){}var b=document.getElementById('darkBtn');if(b)b.textContent=on?'☀️ 淺色':'🌙 深色';drawLP();}
+(function(){var b=document.getElementById('darkBtn');if(b&&document.body.classList.contains('dark'))b.textContent='☀️ 淺色';})();
+</script>
+</body>
+</html>

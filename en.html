@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEEM3440 Assignment 1 Solutions HW1-2</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,"Noto Sans TC","Microsoft JhengHei",Helvetica,Arial,sans-serif;margin:0;background:#f1f5f9;color:#0f172a;line-height:1.65}
+header{position:sticky;top:0;z-index:50;background:linear-gradient(120deg,#1a3a5f,#0e7490);color:#fff;padding:18px 20px 12px}
+header h1{margin:0;font-size:20px}
+header p{margin:4px 0 8px;font-size:13px;opacity:.9}
+#topnav{display:flex;gap:8px;flex-wrap:wrap}
+#topnav a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:5px 13px;font-size:13px}
+#topnav a:hover{background:#fff;color:#0f172a}
+.topbtns{position:absolute;top:14px;right:16px;display:flex;gap:8px}
+.tbtn{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:13px}
+.tbtn:hover{background:#fff;color:#0f172a}
+@media(max-width:640px){.topbtns{position:static;margin-top:10px}}
+main{max-width:1020px;margin:0 auto;padding:18px 14px 60px}
+.card{background:#fff;border-radius:12px;padding:20px;margin:18px 0;box-shadow:0 2px 10px rgba(2,32,71,.08)}
+.card h2{margin-top:0;color:#1a3a5f;font-size:18px}
+.ans{background:#eef6ee;border-left:5px solid #15803d;padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.step{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;margin:8px 0}
+code.k{background:#f1f5f9;padding:1px 7px;border-radius:6px;font-size:13px}
+.small{font-size:13px;color:#475569}
+.kbd{font-size:12px;background:#0f172a;color:#fff;border-radius:6px;padding:2px 9px}
+table.m{border-collapse:collapse;width:100%;margin:10px 0;font-size:13px}
+table.m th{background:#1a3a5f;color:#fff;padding:7px 6px}
+table.m td{border:1px solid #cbd5e1;padding:6px;text-align:center}
+table.m tr:nth-child(even) td{background:#f8fafc}
+.btn{background:#1a3a5f;color:#fff;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;margin:3px}
+.btn:hover{background:#0e7490}
+.btn.ghost{background:#fff;color:#1a3a5f;border:1px solid #1a3a5f}
+.btn.on{background:#0e7490}
+.btn.bit{width:52px;font-weight:700}
+select,input[type=range]{margin:4px 8px 4px 0}
+input[type=range]{width:180px}
+canvas.plot{background:#fff;border:1px solid #cbd5e1;border-radius:8px;width:100%;max-width:560px}
+svg.diagram{background:#fff;border:1px solid #cbd5e1;border-radius:8px;max-width:100%}
+svg.diagram text{font-size:11px;fill:#0f172a}
+pre.print{background:#0f172a;color:#d1fae5;border-radius:8px;padding:12px;font-size:12.5px;overflow-x:auto;white-space:pre-wrap}
+.cite{font-size:12.5px;color:#64748b}
+.bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px}
+.bar .track{flex:1;background:#e2e8f0;border-radius:6px;height:14px;position:relative}
+.bar .fill{background:#0e7490;border-radius:6px;height:14px}
+.bar .lbl{width:150px;text-align:right}
+.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,.6);z-index:100;overflow-y:auto}
+.modal.open{display:block}
+.modal-box{background:#fff;max-width:860px;margin:4vh auto;border-radius:12px;overflow:hidden}
+.modal-bar{display:flex;justify-content:space-between;align-items:center;background:#1a3a5f;color:#fff;padding:12px 16px}
+.modal-body{padding:18px}
+.tutorial h3{color:#1a3a5f}
+.tutorial table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}
+.tutorial th{background:#1a3a5f;color:#fff;padding:6px}
+.tutorial td{border:1px solid #cbd5e1;padding:6px}
+details.quiz{border:1px dashed #0e7490;border-radius:8px;padding:10px 14px;margin:10px 0}
+.pdf-frame{width:100%;height:520px;border:1px solid #cbd5e1;border-radius:8px}
+footer{text-align:center;font-size:12.5px;color:#64748b;padding:20px}
+/* dark mode */
+body.dark{background:#0b1220;color:#e2e8f0}
+body.dark .card{background:#111c30;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+body.dark .card h2{color:#7dd3fc}
+body.dark table.m th{background:#164e63}
+body.dark table.m td{border-color:#334155}
+body.dark table.m tr:nth-child(even) td{background:#0f2033}
+body.dark .step{background:#0f2033;border-color:#334155}
+body.dark .ans{background:#052e1b;border-color:#22c55e;color:#e2e8f0}
+body.dark code.k{background:#1e293b;color:#e2e8f0}
+body.dark .small,body.dark .cite,body.dark footer{color:#94a3b8}
+body.dark .kbd{background:#e2e8f0;color:#0f172a}
+body.dark canvas.plot{background:#0f2033;border-color:#334155}
+body.dark svg.diagram{background:#0f2033;border-color:#334155}
+body.dark svg.diagram text{fill:#e2e8f0}
+body.dark svg.diagram ellipse{fill:#0f2033;stroke:#7dd3fc}
+body.dark svg.diagram path{stroke:#7dd3fc}
+body.dark .tutorial h3{color:#7dd3fc}
+body.dark .tutorial td{border-color:#334155}
+body.dark select,body.dark input{background:#0f2033;color:#e2e8f0;border:1px solid #334155}
+body.dark .modal-box{background:#111c30}
+body.dark .modal-bar{background:#164e63}
+body.dark details.quiz{border-color:#22d3ee}
+body.dark .bar .track{background:#334155}
+body.dark .bar .lbl{color:#e2e8f0}
+body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('hw-theme')==='dark')document.body.classList.add('dark');}catch(e){}</script>
+<header>
+<h1>SEEM3440 Assignment 1 Solutions HW1-2</h1>
+<p>Integer Programming: exhaustive enumeration + branch-and-bound</p>
+<nav id="topnav">
+<a href="#pdf">Answers</a><a href="#q1a">Q1(a) Enumeration</a><a href="#q1b">Q1(b) PIP B&B</a><a href="#q2a">Q2(a) Enumeration</a><a href="#q2b">Q2(b) BIP B&B</a>
+</nav>
+<div class="topbtns">
+<button id="langBtn" class="tbtn" onclick="location.href='index.html'">中文</button>
+<button id="darkBtn" class="tbtn" onclick="toggleDark()">Dark</button>
+</div>
+</header>
+<main>
+<section class="card" id="pdf">
+<h2>Answers PDF</h2>
+<p class="small">English answers only, no derivations.</p>
+<iframe class="pdf-frame" src="answers/HW1_Answers.pdf" title="HW1 Answers PDF"></iframe>
+<p><button class="btn" onclick="window.open('answers/HW1_Answers.pdf','_blank')">Download / open PDF in new tab</button></p>
+</section>
+
+<section class="card" id="q1a">
+<h2>Q1(a) Exhaustive enumeration (25 marks)</h2>
+<div class="step"><b>Problem recap: </b>max <code class="k">z = 6.5x1 + 5x2</code>, s.t. <code class="k">2x1+2x2 ≤ 7</code> (1), <code class="k">2x1+x2 ≤ 5</code> (2), <code class="k">x1+x2 ≥ 1</code> (3), <code class="k">x1,x2 ≥ 0 integer</code>.</div>
+<div class="ans"><b>Answer: </b>16 candidate integer points (x1,x2 in {0,1,2,3}), 8 feasible; <b>optimal (x1*,x2*) = (2,1), z* = 18</b>。</div>
+<h3>Widget: feasibility checker</h3>
+<p class="small">Drag sliders to pick an integer point and check each constraint:</p>
+<p>x1 = <b id="q1aX1v">2</b> <input type="range" id="q1aX1" min="0" max="3" step="1" value="2" oninput="q1aCheck()"> &nbsp; x2 = <b id="q1aX2v">1</b> <input type="range" id="q1aX2" min="0" max="3" step="1" value="1" oninput="q1aCheck()"></p>
+<div id="q1aOut" class="step">—</div>
+<h3>16-point enumeration table</h3>
+<table class="m" id="q1aTable"><tr><th>x1</th><th>x2</th><th>Feasible?</th><th>z</th></tr></table>
+<p><button class="btn" onclick="openTut('q1a')">Tutorial</button></p>
+</section>
+
+<section class="card" id="q1b">
+<h2>Q1(b) PIP branch-and-bound (25 marks)</h2>
+<div class="step"><b>Problem recap: </b>Solve Q1 by PIP branch-and-bound and draw the B&B tree; each subproblem LP relaxation solved graphically.</div>
+<div class="ans"><b>Answer: </b>LP0 (1.5,2) z=19.75: branch x1; LP1 (1,2.5) z=19: branch x2; LP2 (2,1) z=18 integer, z*=18; LP3 (1,2) z=16.5 fathomed; LP4 (0.5,3) z=18.25: branch x1; LP5 (0,3.5) z=17.5 <= 18 fathomed; LP6 infeasible, fathomed.<b>optimum (2,1), z* = 18</b>。</div>
+<h3>Widget: B&B tree + LP feasible region</h3>
+<svg class="diagram" id="tree1" viewBox="0 0 560 300" width="560" height="300">
+<path d="M280 20 L140 80 M280 20 L420 80 M140 80 L70 150 M140 80 L210 150 M210 150 L150 230 M210 150 L270 230" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
+<g id="tree1nodes">
+<ellipse cx="280" cy="20" rx="62" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="280" y="24" text-anchor="middle">LP0 19.75</text>
+<ellipse cx="140" cy="80" rx="58" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="140" y="84" text-anchor="middle">LP1 19</text>
+<ellipse cx="420" cy="80" rx="58" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="420" y="84" text-anchor="middle">LP2 18★</text>
+<ellipse cx="70" cy="150" rx="56" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="70" y="154" text-anchor="middle">LP3 16.5</text>
+<ellipse cx="210" cy="150" rx="58" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="210" y="154" text-anchor="middle">LP4 18.25</text>
+<ellipse cx="150" cy="230" rx="56" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="150" y="234" text-anchor="middle">LP5 17.5</text>
+<ellipse cx="270" cy="230" rx="56" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="270" y="234" text-anchor="middle">LP6 ✕</text>
+</g>
+<text x="200" y="55">x1≤1</text><text x="345" y="55">x1≥2</text>
+<text x="95" y="120">x2≤2</text><text x="180" y="120">x2≥3</text>
+<text x="150" y="195">x1≤0</text><text x="245" y="195">x1≥1</text>
+</svg>
+<p class="small">Click a node for its LP relaxation result:</p>
+<p id="q1bBtns"></p>
+<div id="q1bOut" class="step">—</div>
+<canvas class="plot" id="lpCanvas" width="560" height="420"></canvas>
+<p class="cite">Graphical-method sketch: shaded LP feasible region; green = feasible integer points, red = infeasible; orange ring = selected node LP optimum.</p>
+<p><button class="btn" onclick="openTut('q1b')">Tutorial</button></p>
+</section>
+
+<section class="card" id="q2a">
+<h2>Q2(a) BIP exhaustive enumeration (25 marks)</h2>
+<div class="step"><b>Problem recap: </b>max <code class="k">z = 3x1+3x2+5x3−2x4−x5</code>, s.t. <code class="k">x1+2x2−3x4−x5 ≤ 0</code> (1), <code class="k">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2), <code class="k">xj ∈ {0,1}</code>.</div>
+<div class="ans"><b>Answer: </b>9 of 32 binary points feasible; <b>optimal (1,1,1,1,1), z* = 8 (unique)</b>。</div>
+<h3>Widget: binary-point checker</h3>
+<p>
+<button class="btn bit" id="bit0" onclick="flipBit(0)">0</button>
+<button class="btn bit" id="bit1" onclick="flipBit(1)">0</button>
+<button class="btn bit" id="bit2" onclick="flipBit(2)">0</button>
+<button class="btn bit" id="bit3" onclick="flipBit(3)">0</button>
+<button class="btn bit" id="bit4" onclick="flipBit(4)">0</button>
+<span class="small">x1 x2 x3 x4 x5</span></p>
+<div id="q2aOut" class="step">—</div>
+<h3>32-point enumeration table <button class="btn ghost" id="q2aFilter" onclick="toggleQ2aFilter()">Feasible only</button></h3>
+<table class="m" id="q2aTable"><tr><th>(x1..x5)</th><th>(1) LHS <= 0?</th><th>(2) LHS >= 50?</th><th>z</th><th>Feasible?</th></tr></table>
+<p><button class="btn" onclick="openTut('q2a')">Tutorial</button></p>
+</section>
+
+<section class="card" id="q2b">
+<h2>Q2(b) BIP branch-and-bound (25 marks)</h2>
+<div class="step"><b>Problem recap: </b>Solve Q2 by BIP branch-and-bound; each subproblem LP relaxation solved by an LP solver (computer printouts shown).</div>
+<div class="ans"><b>Answer: </b>LP0 (1,1,1,0.7222,0.8333) z=8.7222: branch x4; x4=0 branch LP1 z=1.9286 (later fathomed by z*=8); x4=1 branch LP2 z=8.4444: branch x5; LP3 (x5=0) z=5.4286 fathomed; LP4 (x5=1) = (1,1,1,1,1) integer, z=8.<b>optimum (1,1,1,1,1), z* = 8</b>。</div>
+<h3>Widget: node computer printouts</h3>
+<svg class="diagram" id="tree2" viewBox="0 0 560 220" width="560" height="220">
+<path d="M280 20 L140 90 M280 20 L420 90 M420 90 L340 170 M420 90 L500 170" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
+<ellipse cx="280" cy="20" rx="70" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="280" y="24" text-anchor="middle">BIP0 8.7222</text>
+<ellipse cx="140" cy="90" rx="66" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="140" y="94" text-anchor="middle">BIP1 1.9286</text>
+<ellipse cx="420" cy="90" rx="66" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="420" y="94" text-anchor="middle">BIP2 8.4444</text>
+<ellipse cx="340" cy="170" rx="66" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="340" y="174" text-anchor="middle">BIP3 5.4286</text>
+<ellipse cx="500" cy="170" rx="62" ry="16" fill="#fff" stroke="#1a3a5f"/><text x="500" y="174" text-anchor="middle">BIP4 8★</text>
+<text x="195" y="60">x4=0</text><text x="345" y="60">x4=1</text>
+<text x="365" y="135">x5=0</text><text x="470" y="135">x5=1</text>
+</svg>
+<p id="q2bBtns"></p>
+<pre class="print" id="q2bOut">—</pre>
+<p><button class="btn" onclick="openTut('q2b')">Tutorial</button></p>
+</section>
+</main>
+<footer>SEEM3440 Operations Research II · Assignment 1 · Enumeration + Branch-and-Bound</footer>
+
+<div class="modal" id="tutModal" onclick="if(event.target===this)closeTut()">
+<div class="modal-box"><div class="modal-bar">
+<b id="tutTitle">Tutorial</b>
+<button class="btn" onclick="closeTut()">Close / Back</button>
+</div><div class="modal-body" id="tutBody"></div></div>
+</div>
+
+<template id="tut-q1a">
+<div class="tutorial">
+<h3>Q1(a) from zero: PIP exhaustive enumeration (beginner-friendly)</h3>
+<p><b>Reader:</b> first encounter with integer programming (IP). This is a pure IP (PIP): all variables are integers.</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>窮舉法</td><td>exhaustive enumeration</td></tr>
+<tr><td>可行解／可行域</td><td>feasible solution / feasible region</td></tr>
+<tr><td>最優解／最優值</td><td>optimal solution / optimal value</td></tr>
+<tr><td>純整數規劃</td><td>pure integer programming (PIP)</td></tr></table>
+<p class="cite">Lecture notes: IP definition, LN Ch.1, p.1:14-1:15; why rounding fails, LN Ch.2, p.2:12-2:19; enumeration and Example 2.8, LN Ch.2, p.2:20-2:22.</p>
+<ol>
+<li><b>Candidate box:</b> 2x1 &le; 7 gives x1 &le; 3; 2x2 &le; 7 gives x2 &le; 3. Check only x1,x2 in {0,1,2,3}: 16 points.</li>
+<li><b>Check the three constraints per point:</b> e.g. (2,1): 2&middot;2+2&middot;1=6 &le; 7; 2&middot;2+1=5 &le; 5; 2+1=3 &ge; 1, feasible with z = 6.5&middot;2+5&middot;1 = 18.</li>
+<li><b>Counter-example:</b> (3,0) gives 2&middot;3+0 = 6 &gt; 5, violating (2): infeasible, even though z = 19.5 is higher.</li>
+<li><b>Compare z over the 8 feasible points:</b> the maximum is 18 at (2,1): the optimal solution.</li>
+</ol>
+<p><b>Common mistakes:</b> forgetting x1+x2 &ge; 1 (wrongly admitting (0,0)); treating (1,3) as feasible (2+6=8 &gt; 7); picking (3,0) with z=19.5 as optimal.</p>
+<details class="quiz"><summary><b>Self-test (click to check yourself)</b></summary>
+<p>1. Why skip x1 = 4? 2. Why is (0,0) infeasible? 3. If minimizing, what is optimal?</p>
+<p><b>Answers:</b> 1. 2&middot;4 = 8 &gt; 7 violates (1). 2. It violates (3) x1+x2 &ge; 1. 3. Minimum feasible z is 5 at (0,1).</p></details>
+</div>
+</template>
+
+<template id="tut-q1b">
+<div class="tutorial">
+<h3>Q1(b) from zero: PIP branch-and-bound (beginner-friendly)</h3>
+<p><b>Reader:</b> you know LP relaxation and want to learn the three steps: branching, bounding, fathoming.</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>分枝定界法</td><td>branch-and-bound (B&amp;B)</td></tr>
+<tr><td>LP 鬆弛／上界</td><td>LP relaxation / upper bound</td></tr>
+<tr><td>分枝／淘汰／保留解</td><td>branching / fathoming / incumbent</td></tr>
+<tr><td>作圖法</td><td>graphical method</td></tr></table>
+<p class="cite">Lecture notes: the three B&amp;B steps, LN Ch.2, p.2:25-2:30; algorithm flow, LN Ch.2, p.2:31-2:35; full 2-D PIP example, LN Ch.2, p.2:36-2:45.</p>
+<ol>
+<li><b>Initialization:</b> incumbent z* = -inf. LP0 gives (1.5,2), z = 19.75 (bound); x1 fractional, no fathoming test passes.</li>
+<li><b>Branch x1:</b> since 1 &lt; 1.5 &lt; 2, add x1 &le; 1 (LP1) and x1 &ge; 2 (LP2). LP2 is the integer point (2,1), z = 18: fathomed (test 3), z* = 18.</li>
+<li><b>Branch x2:</b> LP1 = (1,2.5) has fractional x2: LP3 (x2 &le; 2) gives (1,2), z = 16.5 (integer but &le; z*, fathomed); LP4 (x2 &ge; 3) gives (0.5,3), z = 18.25 &gt; 18, continue.</li>
+<li><b>Branch x1:</b> LP5 (x1 &le; 0) gives (0,3.5), z = 17.5 &le; 18, fathomed by test 1; LP6 (x1 = 1, x2 &ge; 3) is infeasible, fathomed by test 2.</li>
+<li><b>No remaining subproblems: the incumbent (2,1), z* = 18 is optimal.</b></li>
+</ol>
+<p><b>Common mistakes:</b> branching the wrong variable (use the first fractional variable in natural order); stopping at the first integer solution without clearing nodes whose bounds are &le; z*; forgetting to update the incumbent.</p>
+<details class="quiz"><summary><b>Self-test (click to check yourself)</b></summary>
+<p>1. Why is the LP4 bound 18.25 not the answer? 2. Why is LP5 fathomed? 3. Which test fathoms LP6?</p>
+<p><b>Answers:</b> 1. (0.5,3) is fractional: only a bound. 2. Test 1: 17.5 &le; z* = 18. 3. Test 2: its LP relaxation is infeasible.</p></details>
+</div>
+</template>
+
+<template id="tut-q2a">
+<div class="tutorial">
+<h3>Q2(a) from zero: BIP exhaustive enumeration (beginner-friendly)</h3>
+<p><b>Reader:</b> first binary integer programming (BIP) / 0-1 programming problem.</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>二元變數</td><td>binary variable</td></tr>
+<tr><td>窮舉法</td><td>exhaustive enumeration</td></tr>
+<tr><td>限制式左端值</td><td>constraint left-hand side (LHS)</td></tr></table>
+<p class="cite">Lecture notes: BIP definition, LN Ch.2, p.2:3; assignment example, LN Ch.2, p.2:4-2:6; 2^n enumeration complexity, LN Ch.2, p.2:23-2:24.</p>
+<ol>
+<li><b>2^5 = 32 points:</b> n = 5 binary variables, each 0/1: 32 combinations.</li>
+<li><b>Three numbers per point:</b> (1) LHS = x1+2x2-3x4-x5 (need &le; 0); (2) LHS = -15x1+30x2-35x3+45x4+45x5 (need &ge; 50); z = 3x1+3x2+5x3-2x4-x5.</li>
+<li><b>Example (1,1,1,1,1):</b> (1) LHS = 1+2-3-1 = -1 &le; 0; (2) LHS = -15+30-35+45+45 = 70 &ge; 50; z = 8.</li>
+<li><b>Counter-example (1,1,1,0,0):</b> highest z = 11 but (2) LHS = -20 &lt; 50: infeasible. High z does not imply feasibility.</li>
+<li><b>Among 9 feasible points the max z is 8: the unique optimum.</b></li>
+</ol>
+<p><b>Common mistakes:</b> reading (2) as &le;; dropping negative coefficients (-2x4, -x5); calling the z = 11 point optimal while ignoring feasibility.</p>
+<details class="quiz"><summary><b>Self-test (click to check yourself)</b></summary>
+<p>1. Is (0,0,0,1,1) feasible? Its z? 2. How many feasible points? 3. Why is (0,1,0,0,1) infeasible?</p>
+<p><b>Answers:</b> 1. Feasible, z = -3. 2. Nine. 3. (1) LHS = 0+2-0-1 = 1 &gt; 0 violates (1).</p></details>
+</div>
+</template>
+
+<template id="tut-q2b">
+<div class="tutorial">
+<h3>Q2(b) from zero: BIP branch-and-bound (beginner-friendly)</h3>
+<p><b>Reader:</b> you can enumerate BIP and want to learn fixing binary variables plus reading LP-solver printouts.</p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>固定變數</td><td>variable fixing (x = 0 / 1)</td></tr>
+<tr><td>電腦輸出</td><td>computer printout (LP solver output)</td></tr>
+<tr><td>最佳界／最新子問題</td><td>best bound / most recent subproblem</td></tr></table>
+<p class="cite">Lecture notes: B&amp;B algorithm, LN Ch.2, p.2:31-2:35; full BIP example (fixing, printouts), LN Ch.2, p.2:74-2:93.</p>
+<ol>
+<li><b>Rewrite + relax:</b> xj in {0,1} equals 0 &le; xj &le; 1 plus integrality; dropping integrality gives LP0. Solver printout: (1,1,1,0.7222,0.8333), z = 8.7222.</li>
+<li><b>Branch x4:</b> the first fractional variable in natural order is x4 = 0.7222: fix x4 = 0 (BIP1) and x4 = 1 (BIP2). Subproblem choice: best bound or most recent; both lead to BIP2 first here.</li>
+<li><b>BIP2:</b> printout (1,1,1,1,0.5556), z = 8.4444, x5 fractional: fix x5 = 0 (BIP3) and x5 = 1 (BIP4).</li>
+<li><b>BIP4:</b> integer point (1,1,1,1,1), z = 8: fathomed by test 3, new incumbent z* = 8.</li>
+<li><b>Re-check:</b> BIP1 bound 1.9286 &le; 8 (test 1); BIP3 bound 5.4286 &le; 8 (test 1). Nothing remains: (1,1,1,1,1) is optimal.</li>
+</ol>
+<p><b>Common mistakes:</b> using xj &le; floor / &ge; floor+1 on binary variables (fix 0/1 directly); stopping at the integer solution without clearing the rest via test 1; mistaking an LP bound for an integer answer.</p>
+<details class="quiz"><summary><b>Self-test (click to check yourself)</b></summary>
+<p>1. Why branch x4 instead of x1 in LP0? 2. Why no further branching on BIP3? 3. If BIP1 bound were 8.5, what next?</p>
+<p><b>Answers:</b> 1. x1 = 1 is already integer; x4 is the first fractional variable. 2. Bound 5.4286 &le; z* = 8: fathomed by test 1. 3. 8.5 &gt; 8: keep branching (on x2 or x3).</p></details>
+</div>
+</template>
+
+<script>
+var Q1A=[[0,0,0,"N (3)"],[0,1,5,"Y"],[0,2,10,"Y"],[0,3,15,"Y"],[1,0,6.5,"Y"],[1,1,11.5,"Y"],[1,2,16.5,"Y"],[1,3,21.5,"N (1)"],[2,0,13,"Y"],[2,1,18,"Y"],[2,2,23,"N (1)(2)"],[2,3,28,"N (1)(2)"],[3,0,19.5,"N (2)"],[3,1,24.5,"N (1)(2)"],[3,2,29.5,"N (1)(2)"],[3,3,34.5,"N (1)(2)"]];
+(function(){var t=document.getElementById('q1aTable');Q1A.forEach(function(r){var tr=document.createElement('tr');r.forEach(function(c){var td=document.createElement('td');td.textContent=c;tr.appendChild(td);});t.appendChild(tr);});})();
+function q1aCheck(){var x1=+document.getElementById('q1aX1').value,x2=+document.getElementById('q1aX2').value;
+document.getElementById('q1aX1v').textContent=x1;document.getElementById('q1aX2v').textContent=x2;
+var c1=2*x1+2*x2<=7,c2=2*x1+x2<=5,c3=x1+x2>=1,z=6.5*x1+5*x2,ok=c1&&c2&&c3;
+var star=(x1===2&&x2===1)?' optimal':(ok?' (feasible but z < 18, not optimal)':'');
+document.getElementById('q1aOut').innerHTML='(1) 2x1+2x2 = '+(2*x1+2*x2)+(c1?' ✓':' ✕')+'　(2) 2x1+x2 = '+(2*x1+x2)+(c2?' ✓':' ✕')+'　(3) x1+x2 = '+(x1+x2)+(c3?' ✓':' ✕')+'　z = '+z+' → '+(ok?'<b>feasible</b>':'<b>infeasible</b>')+star;}
+q1aCheck();
+var Q1B=[
+{id:'LP0',add:'—',x:'(1.5, 2)',z:'19.75',info:'LP0: no added constraint, (1.5,2), z=19.75, upper bound; x1 fractional: branch x1.'},
+{id:'LP1',add:'x1 ≤ 1',x:'(1, 2.5)',z:'19',info:'LP1: (1,2.5), z=19; x2 fractional: branch x2.'},
+{id:'LP2',add:'x1 ≥ 2',x:'(2, 1)',z:'18',info:'LP2: integer point (2,1), z=18: fathomed by test 3, incumbent z*=18.'},
+{id:'LP3',add:'x1≤1,x2≤2',x:'(1, 2)',z:'16.5',info:'LP3: integer point (1,2), z=16.5 <= 18: fathomed, incumbent unchanged.'},
+{id:'LP4',add:'x1≤1,x2≥3',x:'(0.5, 3)',z:'18.25',info:'LP4: (0.5,3), z=18.25 > 18: branch x1.'},
+{id:'LP5',add:'x1≤0,x2≥3',x:'(0, 3.5)',z:'17.5',info:'LP5: (0,3.5), z=17.5 <= 18: fathomed by test 1.'},
+{id:'LP6',add:'x1=1,x2≥3',x:'—',z:'—',info:'LP6: x1=1 with x2>=3 forces x2<=2.5 from 2+2x2<=7, contradiction: infeasible, fathomed by test 2.'}];
+var q1bSel='LP0';
+(function(){var p=document.getElementById('q1bBtns');Q1B.forEach(function(n){var b=document.createElement('button');b.className='btn ghost';b.textContent=n.id;b.onclick=function(){q1bSel=n.id;q1bShow();drawLP();};p.appendChild(b);});})();
+function q1bShow(){var n=Q1B.filter(function(a){return a.id===q1bSel;})[0];
+document.getElementById('q1bOut').innerHTML='<b>'+n.id+'</b> (added '+n.add+'): LP optimum '+n.x+', z = '+n.z+'<br>'+n.info;}
+q1bShow();
+function drawLP(){var cv=document.getElementById('lpCanvas'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+function X(x){return 50+x*130;}function Y(y){return H-40-y*88;}
+g.clearRect(0,0,W,H);g.strokeStyle='#94a3b8';g.beginPath();g.moveTo(40,10);g.lineTo(40,H-30);g.lineTo(W-10,H-30);g.stroke();
+g.fillStyle='#0f172a';g.font='13px sans-serif';g.fillText('x1',W-30,H-10);g.fillText('x2',12,30);
+var dark=document.body.classList.contains('dark');if(dark)g.fillStyle='#e2e8f0';
+for(var i=0;i<=3;i++){g.fillText(i,X(i)-3,H-12);}for(var j=0;j<=4;j++){g.fillText(j,18,Y(j)+4);}
+g.beginPath();g.moveTo(X(0),Y(3.5));g.lineTo(X(3.5),Y(0));g.closePath();
+g.beginPath();g.moveTo(X(0),Y(5));g.lineTo(X(2.5),Y(0));g.closePath();
+g.beginPath();g.moveTo(X(0),Y(3.5));g.lineTo(X(0),Y(5));g.lineTo(X(1.5),Y(2));g.lineTo(X(2.5),Y(0));g.lineTo(X(1),Y(0));g.lineTo(X(0),Y(1));g.closePath();
+g.fillStyle=dark?'rgba(45,212,191,.18)':'rgba(14,116,144,.15)';g.fill();
+g.strokeStyle='#0e7490';g.stroke();
+[[0,1,'Y'],[0,2,'Y'],[0,3,'Y'],[1,0,'Y'],[1,1,'Y'],[1,2,'Y'],[2,0,'Y'],[2,1,'Y'],[0,0,'N'],[1,3,'N'],[2,2,'N'],[3,0,'N']].forEach(function(p){g.beginPath();g.arc(X(p[0]),Y(p[1]),5,0,7);g.fillStyle=p[2]==='Y'?'#16a34a':'#dc2626';g.fill();});
+var pts={LP0:[1.5,2],LP1:[1,2.5],LP2:[2,1],LP3:[1,2],LP4:[0.5,3],LP5:[0,3.5],LP6:null},pt=pts[q1bSel];
+if(pt){g.beginPath();g.arc(X(pt[0]),Y(pt[1]),10,0,7);g.strokeStyle='#f59e0b';g.lineWidth=3;g.stroke();g.lineWidth=1;}
+g.fillStyle=dark?'#e2e8f0':'#0f172a';g.fillText('2x1+2x2=7',X(2.2),Y(1.6));g.fillText('2x1+x2=5',X(1.9),Y(1.0));}
+drawLP();
+var BITS=[0,0,0,0,0],q2aFeasOnly=false;
+var Q2A=[];(function(){for(var a=0;a<2;a++)for(var b=0;b<2;b++)for(var c=0;c<2;c++)for(var d=0;d<2;d++)for(var e=0;e<2;e++)Q2A.push([a,b,c,d,e]);})();
+function q2row(r){var l1=r[0]+2*r[1]-3*r[3]-r[4],l2=-15*r[0]+30*r[1]-35*r[2]+45*r[3]+45*r[4],z=3*r[0]+3*r[1]+5*r[2]-2*r[3]-r[4];return{l1:l1,l2:l2,z:z,ok:l1<=0&&l2>=50};}
+function renderQ2a(){var t=document.getElementById('q2aTable');while(t.rows.length>1)t.deleteRow(1);
+Q2A.forEach(function(r){var q=q2row(r);if(q2aFeasOnly&&!q.ok)return;var tr=t.insertRow();tr.insertCell().textContent='('+r.join(',')+')';tr.insertCell().textContent=q.l1+(q.l1<=0?' ✓':' ✕');tr.insertCell().textContent=q.l2+(q.l2>=50?' ✓':' ✕');tr.insertCell().textContent=q.z;tr.insertCell().textContent=q.ok?'Y':'N';if(q.ok)tr.style.background='rgba(22,163,74,.12)';});}
+renderQ2a();
+function toggleQ2aFilter(){q2aFeasOnly=!q2aFeasOnly;document.getElementById('q2aFilter').textContent=q2aFeasOnly?'Show all':'Feasible only';renderQ2a();}
+function flipBit(i){BITS[i]=1-BITS[i];document.getElementById('bit'+i).textContent=BITS[i];var q=q2row(BITS);
+var star=(BITS.join('')==='11111')?' optimal':(q.ok?' (feasible but z < 8, not optimal)':'');
+document.getElementById('q2aOut').innerHTML='(1) LHS = '+q.l1+(q.l1<=0?' ✓ ≤0':' ✕ >0')+'　(2) LHS = '+q.l2+(q.l2>=50?' ✓ ≥50':' ✕ <50')+'　z = '+q.z+' → '+(q.ok?'<b>feasible</b>':'<b>infeasible</b>')+star;}
+flipBit(0);flipBit(0);
+var Q2B=[
+{id:'BIP0',fix:'—',x:'(1, 1, 1, 0.7222, 0.8333)',z:'8.7222',why:'First fractional variable x4: fix x4=0 / x4=1.'},
+{id:'BIP1',fix:'x4 = 0',x:'(0, 0.5, 0.2857, 0, 1)',z:'1.9286',why:'Bound 1.9286 <= z*=8: fathomed by test 1.'},
+{id:'BIP2',fix:'x4 = 1',x:'(1, 1, 1, 1, 0.5556)',z:'8.4444',why:'x5 fractional: fix x5=0 / x5=1.'},
+{id:'BIP3',fix:'x4=1,x5=0',x:'(1, 1, 0.2857, 1, 0)',z:'5.4286',why:'Bound 5.4286 <= z*=8: fathomed by test 1.'},
+{id:'BIP4',fix:'x4=1,x5=1',x:'(1, 1, 1, 1, 1)',z:'8',why:'All-integer: fathomed by test 3, new incumbent z*=8.'}];
+(function(){var p=document.getElementById('q2bBtns');Q2B.forEach(function(n){var b=document.createElement('button');b.className='btn ghost';b.textContent=n.id;b.onclick=function(){document.getElementById('q2bOut').textContent='>>> '+n.id+' (fixed '+n.fix+'）\nLP solver printout: x = '+n.x+'\nObjective bound: z = '+n.z+'\n'+n.why;};p.appendChild(b);});})();
+document.getElementById('q2bOut').textContent='>>> BIP0 (fixed —）\nLP solver printout: x = (1, 1, 1, 0.7222, 0.8333)\nObjective bound: z = 8.7222\nFirst fractional variable x4: fix x4=0 / x4=1.';
+var titles={q1a:'Q1(a) Tutorial',q1b:'Q1(b) Tutorial',q2a:'Q2(a) Tutorial',q2b:'Q2(b) Tutorial'};
+function openTut(q){document.getElementById('tutBody').innerHTML=document.getElementById('tut-'+q).innerHTML;document.getElementById('tutTitle').textContent=titles[q]||'Tutorial';document.getElementById('tutModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeTut(){document.getElementById('tutModal').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeTut();});
+function toggleDark(){var on=document.body.classList.toggle('dark');try{localStorage.setItem('hw-theme',on?'dark':'light');}catch(e){}var b=document.getElementById('darkBtn');if(b)b.textContent=on?'Light':'Dark';drawLP();}
+(function(){var b=document.getElementById('darkBtn');if(b&&document.body.classList.contains('dark'))b.textContent='Light';})();
+</script>
+</body>
+</html>
