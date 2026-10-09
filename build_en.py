@@ -45,6 +45,15 @@ EN_TUTS = {
 <li><b>Branch x1:</b> LP5 (x1 &le; 0) gives (0,3.5), z = 17.5 &le; 18, fathomed by test 1; LP6 (x1 = 1, x2 &ge; 3) is infeasible, fathomed by test 2.</li>
 <li><b>No remaining subproblems: the incumbent (2,1), z* = 18 is optimal.</b></li>
 </ol>
+<p><b>Graph-paper + ruler steps (same for every LP relaxation, LP0 as example):</b></p>
+<ol>
+<li><b>Axes:</b> x1 horizontal 0-4, x2 vertical 0-4, one unit per square.</li>
+<li><b>Lines (two points + ruler):</b> (1) 2x1+2x2 = 7 through (3.5, 0), (0, 3.5); (2) 2x1+x2 = 5 through (2.5, 0), (0, 5); (3) x1+x2 = 1 through (1, 0), (0, 1).</li>
+<li><b>Sides + shading:</b> (1)(2) take the origin side (&le;), (3) the far side (&ge;); the feasible region is the pentagon (1,0)-(2.5,0)-(1.5,2)-(0,3.5)-(0,1): shade it.</li>
+<li><b>Isoprofit line + slide ruler:</b> pick any z (e.g. z = 13 through (2, 0), (0, 2.6)) and shift it parallel (slope -1.3) up-right until it last touches the region: (1.5, 2).</li>
+<li><b>Read + decide:</b> read the intersection (1.5 needs half-square estimation), z = 19.75; x1 fractional: branch x1 (1 &lt; 1.5 &lt; 2).</li>
+<li><b>Subproblems:</b> just add one vertical/horizontal line (e.g. x1 &le; 1) and repeat steps 3-5; a new line missing the region means infeasible (e.g. LP6: x1 = 1 forces x2 &le; 2.5, contradicting x2 &ge; 3).</li>
+</ol>
 <p><b>Common mistakes:</b> branching the wrong variable (use the first fractional variable in natural order); stopping at the first integer solution without clearing nodes whose bounds are &le; z*; forgetting to update the incumbent.</p>
 <details class="quiz"><summary><b>Self-test (click to check yourself)</b></summary>
 <p>1. Why is the LP4 bound 18.25 not the answer? 2. Why is LP5 fathomed? 3. Which test fathoms LP6?</p>
@@ -138,6 +147,28 @@ REPLACEMENTS = [
 ("點選節點查看 LP 鬆弛結果 click a node for LP relaxation result：", "Click a node for its LP relaxation result:"),
 ("作圖法示意：陰影為 LP 可行域 feasible region；綠點可行整數點，紅點不可行；大圓圈為所選節點 LP 最優解。Graphical-method sketch.",
  "Graphical-method sketch: shaded LP feasible region; green = feasible integer points, red = infeasible; orange ring = selected node LP optimum."),
+("作圖法示意：陰影為 LP 可行域 feasible region；綠點可行整數點，紅點不可行；大圓圈為所選節點 LP 最優解；橙色虛線為等利潤線 isoprofit line（經 LP 最優點，ruler 沿此斜率平移）。Graphical-method sketch.",
+ "Graphical-method sketch: shaded LP feasible region; green = feasible integer points, red = infeasible; orange ring = selected node LP optimum; orange dashed line = isoprofit line (through the LP optimum: slide the ruler along this slope)."),
+("手稿格式（照 past exam Question 5 格式）", "Hand-written format (following past exam Question 5)"),
+("每格左邊 (IPn) 寫子問題：原題＋外加限制＋當時保留解 z*；右邊 (LPn) 寫手作圖結果：圖上最優＋z＋判決。格之間係分枝標籤。z* 由 −∞ 開始，見到整數解先更新。",
+ "Each box: left (IPn) states the subproblem (original + added constraints + current incumbent z*); right (LPn) states the hand-drawn result (graph optimum + z + verdict). Branch labels sit between boxes. z* starts at −∞ and updates only on integer solutions."),
+("外加：無", "added: none"),
+("外加：", "added: "),
+("保留解 z* = ", "incumbent z* = "),
+("x1,x2 ≥ 0 整數", "x1,x2 ≥ 0 integer"),
+("圖上最優", "graph optimum"),
+("x1 非整數 → 分枝 x1", "x1 fractional → branch x1"),
+("x2 非整數 → 分枝 x2", "x2 fractional → branch x2"),
+("整數解 → 淘汰 (test 3)，保留解 z* = 18", "integer solution → fathomed (test 3), incumbent z* = 18"),
+("整數但 16.5 ≤ 18 → 淘汰 (test 1)", "integer but 16.5 ≤ 18 → fathomed (test 1)"),
+("17.5 ≤ 18 → 淘汰 (test 1)", "17.5 ≤ 18 → fathomed (test 1)"),
+("x1 = 1 與 x2 ≥ 3 矛盾 → 無可行解 → 淘汰 (test 2)", "x1 = 1 contradicts x2 ≥ 3 → infeasible → fathomed (test 2)"),
+("分枝：", "branch: "),
+("分枝 (IP1)：", "branch (IP1): "),
+("分枝 (IP4)：", "branch (IP4): "),
+("（即 x1 = 1）", " (i.e. x1 = 1)"),
+("；", "; "),
+("無剩餘子問題 → 最優 (2,1)，z* = 18。", "No remaining subproblems → optimal (2,1), z* = 18."),
 ("max <code class=\"k\">z = 6.5x1 + 5x2</code>，s.t. <code class=\"k\">2x1+2x2 ≤ 7</code> (1)，<code class=\"k\">2x1+x2 ≤ 5</code> (2)，<code class=\"k\">x1+x2 ≥ 1</code> (3)，<code class=\"k\">x1,x2 ≥ 0 整數 integer</code>。",
  "max <code class=\"k\">z = 6.5x1 + 5x2</code>, s.t. <code class=\"k\">2x1+2x2 ≤ 7</code> (1), <code class=\"k\">2x1+x2 ≤ 5</code> (2), <code class=\"k\">x1+x2 ≥ 1</code> (3), <code class=\"k\">x1,x2 ≥ 0 integer</code>."),
 ("max <code class=\"k\">z = 3x1+3x2+5x3−2x4−x5</code>，s.t. <code class=\"k\">x1+2x2−3x4−x5 ≤ 0</code> (1)，<code class=\"k\">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2)，<code class=\"k\">xj ∈ {0,1}</code>。",
