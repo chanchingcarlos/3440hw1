@@ -91,7 +91,7 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h1>SEEM3440 Assignment 1 Solutions HW1-2</h1>
 <p>Integer Programming: exhaustive enumeration + branch-and-bound</p>
 <nav id="topnav">
-<a href="#pdf">Answers</a><a href="#q1a">Q1(a) Enumeration</a><a href="#q1b">Q1(b) PIP B&B</a><a href="#q2a">Q2(a) Enumeration</a><a href="#q2b">Q2(b) BIP B&B</a>
+<a href="#pdf">Answers</a><a href="#map">Questions + example map</a><a href="#q1a">Q1(a) Enumeration</a><a href="#q1b">Q1(b) PIP B&B</a><a href="#q2a">Q2(a) Enumeration</a><a href="#q2b">Q2(b) BIP B&B</a>
 </nav>
 <div class="topbtns">
 <button id="langBtn" class="tbtn" onclick="location.href='index.html'">中文</button>
@@ -106,10 +106,29 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <p><button class="btn" onclick="window.open('answers/HW1_Answers.pdf','_blank')">Download / open PDF in new tab</button></p>
 </section>
 
+<section class="card" id="map">
+<h2>Original questions + example map (follow along)</h2>
+<div class="step"><b>Original HW1-2 (Assignment 1, 100 marks, answer all):</b><br>
+<b>Q1 (50 marks) IP0:</b>max <code class="k">z = 6.5x1 + 5x2</code>, s.t. <code class="k">2x1+2x2 ≤ 7</code> (1), <code class="k">2x1+x2 ≤ 5</code> (2), <code class="k">x1+x2 ≥ 1</code> (3), <code class="k">xj ≥ 0 integer</code>.(a) 25 marks exhaustive enumeration; (b) 25 marks PIP branch-and-bound + B&B tree, each subproblem LP relaxation solved graphically by hand (graph paper + ruler).<br>
+<b>Q2 (50 marks) BIP0:</b>max <code class="k">z = 3x1+3x2+5x3−2x4−x5</code>, s.t. <code class="k">x1+2x2−3x4−x5 ≤ 0</code> (1), <code class="k">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2), <code class="k">xj binary</code>.(a) 25 marks exhaustive enumeration; (b) 25 marks BIP branch-and-bound + B&B tree, each subproblem LP relaxation by LP solver (computer printouts attached).</div>
+<h3>Example cross-reference (which worked example each question follows)</h3>
+<table class="m"><tr><th>Question</th><th>Worked example to follow (same method)</th><th>Lecture location</th></tr>
+<tr><td>Q1(a)</td><td>Example 2.8: fix integer box → check point by point → enumeration table → compare z</td><td>ch02-3.pdf pp.20–22 (slides 2:20–2:22); why rounding fails: pp.12–19</td></tr>
+<tr><td>Q1(b)</td><td>2-D PIP full example: init z*=−∞ → LP bound → three fathoming tests → branch first fractional variable → draw tree</td><td>ch02-3.pdf pp.36–45 (slides 2:36–2:45); algorithm overview pp.31–35</td></tr>
+<tr><td>Q2(a)</td><td>BIP definition + 2ⁿ complexity + Example 2.8 table format: check both constraints for each of 32 points</td><td>ch02-3.pdf p.3 (2:3), pp.23–24 (2:23–2:24), pp.20–22</td></tr>
+<tr><td>Q2(b)</td><td>BIP full example: rewrite binary as 0≤xj≤1 + integrality → LP relaxation → fix 0/1 branching → read printout → test-1 sweep</td><td>ch02-3.pdf pp.74–93 (slides 2:74–2:93)</td></tr></table>
+<p class="cite">How to use: open ch02-3.pdf on your own computer (page N = slide 2:N) and follow the pages above step by step. Each question below has its own follow-the-example steps. Lecture PDFs stay local and are not uploaded to GitHub.</p>
+</section>
+
 <section class="card" id="q1a">
 <h2>Q1(a) Exhaustive enumeration (25 marks)</h2>
 <div class="step"><b>Problem recap: </b>max <code class="k">z = 6.5x1 + 5x2</code>, s.t. <code class="k">2x1+2x2 ≤ 7</code> (1), <code class="k">2x1+x2 ≤ 5</code> (2), <code class="k">x1+x2 ≥ 1</code> (3), <code class="k">x1,x2 ≥ 0 integer</code>.</div>
 <div class="ans"><b>Answer: </b>16 candidate integer points (x1,x2 in {0,1,2,3}), 8 feasible; <b>optimal (x1*,x2*) = (2,1), z* = 18</b>。</div>
+<div class="step"><b>Follow the example (cf. Example 2.8, ch02-3.pdf pp.20–22):</b><br>
+1. The example fixes a box first; here 2x1 ≤ 7, 2x2 ≤ 7 give x1,x2 ∈ {0,1,2,3}.<br>
+2. The example checks each point and computes z; here check (1)(2)(3) + z per point (table Feasible? column marks violated constraints in brackets after N).<br>
+3. The example compares z for the max; here compare z over 8 feasible points, (2,1) with 18 is max.<br>
+4. For submission list all 16 points in the example table format (x1, x2, Feasible?, z).</div>
 <h3>Widget: feasibility checker</h3>
 <p class="small">Drag sliders to pick an integer point and check each constraint:</p>
 <p>x1 = <b id="q1aX1v">2</b> <input type="range" id="q1aX1" min="0" max="3" step="1" value="2" oninput="q1aCheck()"> &nbsp; x2 = <b id="q1aX2v">1</b> <input type="range" id="q1aX2" min="0" max="3" step="1" value="1" oninput="q1aCheck()"></p>
@@ -123,6 +142,12 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h2>Q1(b) PIP branch-and-bound (25 marks)</h2>
 <div class="step"><b>Problem recap: </b>Solve Q1 by PIP branch-and-bound and draw the B&B tree; each subproblem LP relaxation solved graphically.</div>
 <div class="ans"><b>Answer: </b>LP0 (1.5,2) z=19.75: branch x1; LP1 (1,2.5) z=19: branch x2; LP2 (2,1) z=18 integer, z*=18; LP3 (1,2) z=16.5 fathomed; LP4 (0.5,3) z=18.25: branch x1; LP5 (0,3.5) z=17.5 <= 18 fathomed; LP6 infeasible, fathomed.<b>optimum (2,1), z* = 18</b>。</div>
+<div class="step"><b>Follow the example (cf. 2-D PIP example, ch02-3.pdf pp.36–45; overview pp.31–35):</b><br>
+1. Initialize z* = −∞ and solve the original LP relaxation for a bound (example LP0 23.75; here LP0 (1.5,2) 19.75).<br>
+2. Try all three fathoming tests one by one (as in example p.2:38: write down Test 1/2/3 passed/failed).<br>
+3. Always branch the first fractional variable (natural order), adding xj ≤ floor / xj ≥ floor+1 (example x1 = 3.75 → x1 ≤ 3 / x1 ≥ 4; here x1 = 1.5 → x1 ≤ 1 / x1 ≥ 2).<br>
+4. An integer solution is fathomed (test 3) at once and updates the incumbent; finish with a test-1 sweep over remaining nodes — none left means optimal.<br>
+5. Draw the tree as in example p.2:45: each node shows the LP relaxation solution + z bound, plus the current incumbent.</div>
 <h3>Widget: B&B tree + LP feasible region</h3>
 <svg class="diagram" id="tree1" viewBox="0 0 560 300" width="560" height="300">
 <path d="M280 20 L140 80 M280 20 L420 80 M140 80 L70 150 M140 80 L210 150 M210 150 L150 230 M210 150 L270 230" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
@@ -151,6 +176,11 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h2>Q2(a) BIP exhaustive enumeration (25 marks)</h2>
 <div class="step"><b>Problem recap: </b>max <code class="k">z = 3x1+3x2+5x3−2x4−x5</code>, s.t. <code class="k">x1+2x2−3x4−x5 ≤ 0</code> (1), <code class="k">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2), <code class="k">xj ∈ {0,1}</code>.</div>
 <div class="ans"><b>Answer: </b>9 of 32 binary points feasible; <b>optimal (1,1,1,1,1), z* = 8 (unique)</b>。</div>
+<div class="step"><b>Follow the example (cf. BIP definition p.3, 2ⁿ complexity pp.23–24, Example 2.8 table pp.20–22):</b><br>
+1. n = 5 binary variables → 2⁵ = 32 points (Example 2.9 explains why enumeration explodes, but n = 5 is doable).<br>
+2. Compute three numbers per point: (1) LHS (need ≤ 0), (2) LHS (need ≥ 50, watch the direction), z.<br>
+3. Warning: highest z is not optimal — (1,1,1,0,0) has z = 11 but (2) LHS = −20, infeasible.<br>
+4. For submission list all 32 points (x, z, Feasible?); 9 feasible, optimum (1,1,1,1,1) z = 8 unique.</div>
 <h3>Widget: binary-point checker</h3>
 <p>
 <button class="btn bit" id="bit0" onclick="flipBit(0)">0</button>
@@ -169,6 +199,12 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h2>Q2(b) BIP branch-and-bound (25 marks)</h2>
 <div class="step"><b>Problem recap: </b>Solve Q2 by BIP branch-and-bound; each subproblem LP relaxation solved by an LP solver (computer printouts shown).</div>
 <div class="ans"><b>Answer: </b>LP0 (1,1,1,0.7222,0.8333) z=8.7222: branch x4; x4=0 branch LP1 z=1.9286 (later fathomed by z*=8); x4=1 branch LP2 z=8.4444: branch x5; LP3 (x5=0) z=5.4286 fathomed; LP4 (x5=1) = (1,1,1,1,1) integer, z=8.<b>optimum (1,1,1,1,1), z* = 8</b>。</div>
+<div class="step"><b>Follow the example (cf. BIP full example, ch02-3.pdf pp.74–93):</b><br>
+1. First rewrite: xj binary equals 0 ≤ xj ≤ 1 plus integrality (example pp.75–76); dropping integrality gives LP0.<br>
+2. Branch by fixing x = 0 / x = 1 directly, not floor splits (example pp.78–79; here branch x4 then x5).<br>
+3. Keep the solver printout per node: x + z bound (here LP0 8.7222, LP2 8.4444, LP1 1.9286, LP3 5.4286, LP4 integer 8).<br>
+4. After the integer solution (test 3) updates z* = 8, fathom BIP1/BIP3 with test 1 (as in example p.92).<br>
+5. Draw the tree as in example p.93: BIP0 → {BIP1, BIP2}; BIP2 → {BIP3, BIP4}.</div>
 <h3>Widget: node computer printouts</h3>
 <svg class="diagram" id="tree2" viewBox="0 0 560 220" width="560" height="220">
 <path d="M280 20 L140 90 M280 20 L420 90 M420 90 L340 170 M420 90 L500 170" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>

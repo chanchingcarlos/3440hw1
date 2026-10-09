@@ -91,7 +91,7 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h1>SEEM3440 作業一 詳解 HW1-2 Solutions</h1>
 <p>整數規劃 Integer Programming：窮舉法 exhaustive enumeration ＋ 分枝定界法 branch-and-bound</p>
 <nav id="topnav">
-<a href="#pdf">答案 PDF</a><a href="#q1a">Q1(a) 窮舉</a><a href="#q1b">Q1(b) PIP 分枝定界</a><a href="#q2a">Q2(a) 窮舉</a><a href="#q2b">Q2(b) BIP 分枝定界</a>
+<a href="#pdf">答案 PDF</a><a href="#map">原題＋例題地圖</a><a href="#q1a">Q1(a) 窮舉</a><a href="#q1b">Q1(b) PIP 分枝定界</a><a href="#q2a">Q2(a) 窮舉</a><a href="#q2b">Q2(b) BIP 分枝定界</a>
 </nav>
 <div class="topbtns">
 <button id="langBtn" class="tbtn" onclick="location.href='en.html'">EN</button>
@@ -106,10 +106,29 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <p><button class="btn" onclick="window.open('answers/HW1_Answers.pdf','_blank')">⬇ 下載／新分頁開啟 PDF</button></p>
 </section>
 
+<section class="card" id="map">
+<h2>原題要求＋例題地圖（跟住做）</h2>
+<div class="step"><b>原題 HW1-2（Assignment 1，滿分 100 分，全部要答）：</b><br>
+<b>Q1（50 分）IP0：</b>max <code class="k">z = 6.5x1 + 5x2</code>，s.t. <code class="k">2x1+2x2 ≤ 7</code> (1)，<code class="k">2x1+x2 ≤ 5</code> (2)，<code class="k">x1+x2 ≥ 1</code> (3)，<code class="k">xj ≥ 0 整數</code>。(a) 25 分 exhaustive enumeration；(b) 25 分 PIP Branch-and-Bound＋畫分枝定界樹，每個子問題的 LP 鬆弛用手作圖法（graph paper＋ruler）。<br>
+<b>Q2（50 分）BIP0：</b>max <code class="k">z = 3x1+3x2+5x3−2x4−x5</code>，s.t. <code class="k">x1+2x2−3x4−x5 ≤ 0</code> (1)，<code class="k">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2)，<code class="k">xj binary</code>。(a) 25 分 exhaustive enumeration；(b) 25 分 BIP Branch-and-Bound＋畫分枝定界樹，每個子問題的 LP 鬆弛用 LP solver（附電腦輸出 computer printouts）。</div>
+<h3>例題對照表（每題跟邊個例題做）</h3>
+<table class="m"><tr><th>功課題</th><th>跟嘅例題（做法一樣）</th><th>講義位置</th></tr>
+<tr><td>Q1(a)</td><td>Example 2.8：定整數 box → 逐點驗證 → 窮舉表 → 比 z</td><td>ch02-3.pdf pp.20–22（投影片 2:20–2:22）；另見點解唔可以四捨五入 pp.12–19</td></tr>
+<tr><td>Q1(b)</td><td>2-D PIP 完整例：Init z*=−∞ → LP bound → 三個 fathoming 檢驗 → 分第一個非整數變數 → 畫樹</td><td>ch02-3.pdf pp.36–45（投影片 2:36–2:45）；算法總綱 pp.31–35</td></tr>
+<tr><td>Q2(a)</td><td>BIP 定義＋2ⁿ 複雜度＋Example 2.8 表格式：32 點逐點驗兩條式</td><td>ch02-3.pdf p.3（2:3）、pp.23–24（2:23–2:24）、pp.20–22</td></tr>
+<tr><td>Q2(b)</td><td>BIP 完整例：binary 改寫 0≤xj≤1＋整數 → LP 鬆弛 → 固定 0/1 分枝 → 讀 printout → test 1 回頭淘汰</td><td>ch02-3.pdf pp.74–93（投影片 2:74–2:93）</td></tr></table>
+<p class="cite">用法：喺自己電腦開 ch02-3.pdf（第 N 頁＝投影片 2:N），對住上表頁碼逐步跟。下面每題另有「跟住例題做」對應步驟。講義 PDF 只留本機、不上傳 GitHub。</p>
+</section>
+
 <section class="card" id="q1a">
 <h2>Q1(a) 窮舉法 exhaustive enumeration（25 分）</h2>
 <div class="step"><b>題目 recap：</b>max <code class="k">z = 6.5x1 + 5x2</code>，s.t. <code class="k">2x1+2x2 ≤ 7</code> (1)，<code class="k">2x1+x2 ≤ 5</code> (2)，<code class="k">x1+x2 ≥ 1</code> (3)，<code class="k">x1,x2 ≥ 0 整數 integer</code>。</div>
 <div class="ans"><b>答案 Answer：</b>候選整數點共 16 個（x1,x2 ∈ {0,1,2,3}），可行 8 個；<b>最優解 optimal (x1*,x2*) = (2,1)，z* = 18</b>。</div>
+<div class="step"><b>跟住例題做（對照 Example 2.8，ch02-3.pdf pp.20–22）：</b><br>
+1. 例題先定 box；本題由 2x1 ≤ 7、2x2 ≤ 7 得 x1,x2 ∈ {0,1,2,3}。<br>
+2. 例題逐點驗限制＋計 z；本題逐點驗 (1)(2)(3)＋計 z（下表 Feasible? 欄 N 後括號註明違反邊條）。<br>
+3. 例題比 z 取最大；本題 8 個可行點比 z，(2,1) 的 18 最大。<br>
+4. 交功課照例題表格式列 16 點（x1, x2, Feasible?, z）。</div>
 <h3>互動小工具：可行性檢查器 feasibility checker</h3>
 <p class="small">拖動滑桿選擇整數點，檢查每條限制是否成立 check each constraint：</p>
 <p>x1 = <b id="q1aX1v">2</b> <input type="range" id="q1aX1" min="0" max="3" step="1" value="2" oninput="q1aCheck()"> &nbsp; x2 = <b id="q1aX2v">1</b> <input type="range" id="q1aX2" min="0" max="3" step="1" value="1" oninput="q1aCheck()"></p>
@@ -123,6 +142,12 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h2>Q1(b) PIP 分枝定界法 branch-and-bound（25 分）</h2>
 <div class="step"><b>題目 recap：</b>用 PIP Branch-and-Bound 解 Q1，並畫出分枝定界樹 B&amp;B tree；每個子問題的 LP 鬆弛以作圖法求解 LP relaxation solved graphically。</div>
 <div class="ans"><b>答案 Answer：</b>LP0 (1.5,2) z=19.75 → 分枝 x1；LP1 (1,2.5) z=19 → 分枝 x2；LP2 (2,1) z=18 整數，z*=18；LP3 (1,2) z=16.5 淘汰；LP4 (0.5,3) z=18.25 → 分枝 x1；LP5 (0,3.5) z=17.5 ≤ 18 淘汰；LP6 不可行淘汰。<b>最優 (2,1)，z* = 18</b>。</div>
+<div class="step"><b>跟住例題做（對照 2-D PIP 例，ch02-3.pdf pp.36–45；算法總綱 pp.31–35）：</b><br>
+1. 初始化 z* = −∞，解原問題 LP 鬆弛得 bound（例題 LP0 23.75；本題 LP0 (1.5,2) 19.75）。<br>
+2. 三個 fathoming 檢驗逐一試（照例題 p.2:38 寫法：Test 1／2／3 passed／failed 都要寫）。<br>
+3. 分枝永遠揀第一個非整數變數（自然順序），加 xj ≤ floor／xj ≥ floor+1（例題 x1 = 3.75 → x1 ≤ 3／x1 ≥ 4；本題 x1 = 1.5 → x1 ≤ 1／x1 ≥ 2）。<br>
+4. 整數解出現即 fathomed（test 3）並更新 incumbent；最後用 test 1 回頭淘汰其餘節點，無剩餘即最優。<br>
+5. 畫樹格式照例題 p.2:45：每個節點寫 LP 鬆弛解＋z bound，另行寫當時 incumbent。</div>
 <h3>互動小工具：分枝定界樹＋LP 可行域 B&amp;B tree + LP feasible region</h3>
 <svg class="diagram" id="tree1" viewBox="0 0 560 300" width="560" height="300">
 <path d="M280 20 L140 80 M280 20 L420 80 M140 80 L70 150 M140 80 L210 150 M210 150 L150 230 M210 150 L270 230" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
@@ -151,6 +176,11 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h2>Q2(a) BIP 窮舉法 exhaustive enumeration（25 分）</h2>
 <div class="step"><b>題目 recap：</b>max <code class="k">z = 3x1+3x2+5x3−2x4−x5</code>，s.t. <code class="k">x1+2x2−3x4−x5 ≤ 0</code> (1)，<code class="k">−15x1+30x2−35x3+45x4+45x5 ≥ 50</code> (2)，<code class="k">xj ∈ {0,1}</code>。</div>
 <div class="ans"><b>答案 Answer：</b>32 個二元點中 9 個可行；<b>最優解 optimal (1,1,1,1,1)，z* = 8（唯一 unique）</b>。</div>
+<div class="step"><b>跟住例題做（對照 BIP 定義 p.3、2ⁿ 複雜度 pp.23–24、Example 2.8 表格式 pp.20–22）：</b><br>
+1. n = 5 個 binary → 2⁵ = 32 點（例題 2.9 講窮舉點解會爆炸，但 n = 5 先做得到）。<br>
+2. 每點計三個數：(1) LHS（要 ≤ 0）、(2) LHS（要 ≥ 50，唔好睇錯方向）、z。<br>
+3. 反例警惕：z 最高唔等於最優 —— (1,1,1,0,0) z = 11 但 (2) LHS = −20，不可行。<br>
+4. 交功課列 32 點（x, z, Feasible?），可行 9 點，最優 (1,1,1,1,1) z = 8 唯一。</div>
 <h3>互動小工具：二元點檢查器 binary-point checker</h3>
 <p>
 <button class="btn bit" id="bit0" onclick="flipBit(0)">0</button>
@@ -169,6 +199,12 @@ body.dark .btn.ghost{background:#111c30;color:#7dd3fc;border-color:#7dd3fc}
 <h2>Q2(b) BIP 分枝定界法 branch-and-bound（25 分）</h2>
 <div class="step"><b>題目 recap：</b>用 BIP Branch-and-Bound 解 Q2，每個子問題的 LP 鬆弛用 LP 求解器解（附電腦輸出 show computer printouts）。</div>
 <div class="ans"><b>答案 Answer：</b>LP0 (1,1,1,0.7222,0.8333) z=8.7222 → 分枝 x4；x4=0 支 LP1 z=1.9286（後被 z*=8 淘汰）；x4=1 支 LP2 z=8.4444 → 分枝 x5；LP3 (x5=0) z=5.4286 淘汰；LP4 (x5=1) = (1,1,1,1,1) 整數 z=8。<b>最優 (1,1,1,1,1)，z* = 8</b>。</div>
+<div class="step"><b>跟住例題做（對照 BIP 完整例，ch02-3.pdf pp.74–93）：</b><br>
+1. 先改寫：xj binary 等價於 0 ≤ xj ≤ 1 加整數限制（例題 pp.75–76），刪整數限制得 LP0。<br>
+2. 分枝唔用 floor 式，直接固定 x = 0／x = 1（例題 pp.78–79；本題先分 x4 再分 x5）。<br>
+3. 每個節點保留 solver printout：x＋z bound（本題 LP0 8.7222、LP2 8.4444、LP1 1.9286、LP3 5.4286、LP4 整數 8）。<br>
+4. 整數解（test 3）更新 z* = 8 後，用 test 1 回頭淘汰 BIP1／BIP3（照例題 p.92 做法）。<br>
+5. 畫樹格式照例題 p.93：BIP0 → {BIP1, BIP2}；BIP2 → {BIP3, BIP4}。</div>
 <h3>互動小工具：節點電腦輸出 LP-solver printouts</h3>
 <svg class="diagram" id="tree2" viewBox="0 0 560 220" width="560" height="220">
 <path d="M280 20 L140 90 M280 20 L420 90 M420 90 L340 170 M420 90 L500 170" stroke="#1a3a5f" fill="none" stroke-width="1.5"/>
