@@ -54,6 +54,17 @@ EN_TUTS = {
 <li><b>Read + decide:</b> read the intersection (1.5 needs half-square estimation), z = 19.75; x1 fractional: branch x1 (1 &lt; 1.5 &lt; 2).</li>
 <li><b>Subproblems:</b> just add one vertical/horizontal line (e.g. x1 &le; 1) and repeat steps 3-5; a new line missing the region means infeasible (e.g. LP6: x1 = 1 forces x2 &le; 2.5, contradicting x2 &ge; 3).</li>
 </ol>
+<p><b>Your graph-paper photo, element by element (your Q5 photo → draw this for Q1(b)):</b></p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>相入面嘅樣 → 係咩意思 → Q1(b) 照畫</td><td>Photo element → meaning → draw this for Q1(b)</td></tr>
+<tr><td>橫軸 x1／縱軸 x2（手畫箭嘴）→ 座標軸</td><td>Draw axes: x1 horizontal 0-4, x2 vertical 0-4</td></tr>
+<tr><td>斜線＋頂部標 22.5 → 原限制線：兩點＋ruler 畫，標截距</td><td>(1) through (3.5,0),(0,3.5); (2) through (2.5,0),(0,5)</td></tr>
+<tr><td>對角線 → 原限制線</td><td>(3) through (1,0),(0,1)</td></tr>
+<tr><td>線旁小箭嘴 → 可行一側（≤ 近原點，≥ 遠原點）</td><td>(1)(2) arrows toward origin; (3) outward</td></tr>
+<tr><td>垂直線 x1=5、6；水平線 x2=5、6 → 分枝加的限制</td><td>LP1: x1=1 vertical; LP4: add x2=3 horizontal; LP5: x1=0; LP6: x1=1</td></tr>
+<tr><td>交點圈起標 (5.5,6) → 圖上讀 LP 最優（半格估讀）＋計 z</td><td>LP0 ring (1.5,2) z=19.75; LP1 (1,2.5); LP4 (0.5,3); LP5 (0,3.5); LP2/LP3 ring integer points</td></tr>
+<tr><td>（相無，記得加）等利潤線 → 證明點解呢點最優</td><td>Dashed slope -1.3 line through optimum (copy canvas orange line); write z + verdict beside it</td></tr></table>
+<p class="cite">LP6 drawing: the sheet shows the x1 = 1 vertical line, but the x2 &ge; 3 region never meets (1) 2+2x2 &le; 7 (which forces x2 &le; 2.5): contradiction, so write Infeasible &rarr; Fathomed (test 2).</p>
 <p><b>Common mistakes:</b> branching the wrong variable (use the first fractional variable in natural order); stopping at the first integer solution without clearing nodes whose bounds are &le; z*; forgetting to update the incumbent.</p>
 <details class="quiz"><summary><b>Self-test (click to check yourself)</b></summary>
 <p>1. Why is the LP4 bound 18.25 not the answer? 2. Why is LP5 fathomed? 3. Which test fathoms LP6?</p>

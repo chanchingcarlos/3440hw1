@@ -302,6 +302,17 @@ body.dark .branch{color:#7dd3fc}
 <li><b>讀數＋判決：</b>交點讀座標（1.5 係半格估讀），z = 19.75；x1 非整數 → 分枝 x1（1 &lt; 1.5 &lt; 2）。</li>
 <li><b>子問題：</b>只係加多條垂直／水平線（如 x1 ≤ 1），重複上面 3–5 步；新線同可行域無交 → Infeasible（如 LP6：x1 = 1 要求 x2 ≤ 2.5，同 x2 ≥ 3 矛盾）。</li>
 </ol>
+<p><b>你張 graph paper 相逐樣解說（左：Q5 例相，右：Q1(b) 照畫）：</b></p>
+<table><tr><th>中文</th><th>English</th></tr>
+<tr><td>相入面嘅樣 → 係咩意思 → Q1(b) 照畫</td><td>Photo element → meaning → draw this for Q1(b)</td></tr>
+<tr><td>橫軸 x1／縱軸 x2（手畫箭嘴）→ 座標軸</td><td>Draw axes: x1 horizontal 0–4, x2 vertical 0–4</td></tr>
+<tr><td>斜線＋頂部標 22.5 → 原限制線：兩點＋ruler 畫，標截距</td><td>(1) through (3.5,0),(0,3.5); (2) through (2.5,0),(0,5)</td></tr>
+<tr><td>對角線 → 原限制線</td><td>(3) through (1,0),(0,1)</td></tr>
+<tr><td>線旁小箭嘴 → 可行一側（≤ 近原點，≥ 遠原點）</td><td>(1)(2) arrows toward origin; (3) outward</td></tr>
+<tr><td>垂直線 x1=5、6；水平線 x2=5、6 → 分枝加的限制</td><td>LP1: x1=1 vertical; LP4: add x2=3 horizontal; LP5: x1=0; LP6: x1=1</td></tr>
+<tr><td>交點圈起標 (5.5,6) → 圖上讀 LP 最優（半格估讀）＋計 z</td><td>LP0 ring (1.5,2) z=19.75; LP1 (1,2.5); LP4 (0.5,3); LP5 (0,3.5); LP2/LP3 ring integer points</td></tr>
+<tr><td>（相無，記得加）等利潤線 → 證明點解呢點最優</td><td>Dashed slope −1.3 line through optimum (copy canvas orange line); write z + verdict beside it</td></tr></table>
+<p class="cite">LP6 畫法：圖上有 x1 = 1 垂直線，但 x2 ≥ 3 區域同 (1) 2+2x2 ≤ 7（要求 x2 ≤ 2.5）無交 → 兩線矛盾，寫 Infeasible → Fathomed (test 2)。</p>
 <p><b>常見錯誤 common mistakes：</b>分枝變數選錯（應選第一個非整數變數 first fractional variable，自然順序 natural order）；整數解出現就停（還要確認上界 ≤ z* 的節點）；忘記更新保留解。</p>
 <details class="quiz"><summary><b>自我測驗 self-test（點開作答 click to test yourself）</b></summary>
 <p>1. LP4 的上界 18.25 為何不能直接當答案？2. LP5 為何被淘汰？3. LP6 屬於哪個淘汰檢驗？</p>
